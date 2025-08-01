@@ -1,7 +1,10 @@
+"use client";
+
 import Header from "./components/Header";
 import LightRays from "./components/Lightrays";
 import Button from "./components/Button"; 
 import { GoArrowRight } from "react-icons/go";
+import { signIn } from "next-auth/react";
 
 export default function LandingPage() {
   return (
@@ -30,12 +33,14 @@ export default function LandingPage() {
           Tired of scrolling forever? Let CineAI do the digging, so you can
           enjoy the best shows and movies faster. Less browsing, more watching.
         </p>
-        <Button className="flex items-center mt-6 md:mt-10 shadow-xl/20 shadow-yellow-500">
+        <Button
+          onClick={() => signIn("google", { callbackUrl: "/home" })}
+          className="flex items-center mt-6 md:mt-10 shadow-xl/20 shadow-yellow-500"
+        >
           <span className="mr-2">Get started</span>
           <GoArrowRight className="h-5 w-5" />
         </Button>
       </div>
-      <div className="bg-white">aaaa</div>
     </>
   );
 }

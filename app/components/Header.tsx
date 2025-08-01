@@ -1,6 +1,11 @@
+'use client';
+
 import { RiMovie2AiLine } from "react-icons/ri";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Header = () => {
+  const { data: session } = useSession();
+  const isLoggedIn = !!session;
   return (
     <header className="fixed top-4 inset-x-0 z-50 mx-4 sm:mx-15">
       <div className="mx-auto max-w-5xl  backdrop-blur-lg rounded-full px-2  py-2 flex items-center justify-between border border-white/10">
@@ -11,9 +16,12 @@ const Header = () => {
           </h1>
         </span>
 
-        <p className="whitespace-nowrap bg-white text-black text-sm font-semibold rounded-full px-4 py-2">
-          Login
-        </p>
+        <button
+          onClick={() => (isLoggedIn ? signOut() : signIn("google"))}
+          className="whitespace-nowrap bg-white text-black text-sm font-semibold rounded-full px-4 py-2"
+        >
+          {isLoggedIn ? "Logout" : "Login"}
+        </button>
       </div>
     </header>
   );
