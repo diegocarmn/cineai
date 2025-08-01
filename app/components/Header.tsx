@@ -17,7 +17,9 @@ const Header = () => {
         </span>
 
         <button
-          onClick={() => (isLoggedIn ? signOut() : signIn("google"))}
+          onClick={() =>
+            isLoggedIn ? signOut() : signIn("google", { callbackUrl: "/home" })
+          }
           className="whitespace-nowrap bg-white text-black text-sm font-semibold rounded-full px-4 py-2"
         >
           {isLoggedIn ? "Logout" : "Login"}
