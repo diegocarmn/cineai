@@ -1,37 +1,11 @@
-"use client";
+'use client';
 
 import { useRef, useEffect, useState } from "react";
 import { Renderer, Program, Triangle, Mesh } from "ogl";
 
-export type RaysOrigin =
-  | "top-center"
-  | "top-left"
-  | "top-right"
-  | "right"
-  | "left"
-  | "bottom-center"
-  | "bottom-right"
-  | "bottom-left";
-
-interface LightRaysProps {
-  raysOrigin?: RaysOrigin;
-  raysColor?: string;
-  raysSpeed?: number;
-  lightSpread?: number;
-  rayLength?: number;
-  pulsating?: boolean;
-  fadeDistance?: number;
-  saturation?: number;
-  followMouse?: boolean;
-  mouseInfluence?: number;
-  noiseAmount?: number;
-  distortion?: number;
-  className?: string;
-}
-
 const DEFAULT_COLOR = "#ffffff";
 
-const hexToRgb = (hex: string): [number, number, number] => {
+const hexToRgb = (hex) => {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return m
     ? [
@@ -42,11 +16,7 @@ const hexToRgb = (hex: string): [number, number, number] => {
     : [1, 1, 1];
 };
 
-const getAnchorAndDir = (
-  origin: RaysOrigin,
-  w: number,
-  h: number
-): { anchor: [number, number]; dir: [number, number] } => {
+const getAnchorAndDir = (origin, w, h) => {
   const outside = 0.2;
   switch (origin) {
     case "top-left":
@@ -68,7 +38,7 @@ const getAnchorAndDir = (
   }
 };
 
-const LightRays: React.FC<LightRaysProps> = ({
+const LightRays = ({
   raysOrigin = "top-center",
   raysColor = DEFAULT_COLOR,
   raysSpeed = 1,
@@ -83,16 +53,16 @@ const LightRays: React.FC<LightRaysProps> = ({
   distortion = 0.0,
   className = "",
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const uniformsRef = useRef<Record<string, { value: any }> | null>(null);
-  const rendererRef = useRef<Renderer | null>(null);
+  const containerRef = useRef(null);
+  const uniformsRef = useRef(null);
+  const rendererRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const smoothMouseRef = useRef({ x: 0.5, y: 0.5 });
-  const animationIdRef = useRef<number | null>(null);
-  const meshRef = useRef<Mesh | null>(null);
-  const cleanupFunctionRef = useRef<(() => void) | null>(null);
+  const animationIdRef = useRef(null);
+  const meshRef = useRef(null);
+  const cleanupFunctionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  const observerRef = useRef(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -296,7 +266,7 @@ void main() {
         uniforms.rayDir.value = dir;
       };
 
-      const loop = (t: number) => {
+      const loop = (t) => {
         if (!rendererRef.current || !uniformsRef.current || !meshRef.current) {
           return;
         }
@@ -425,7 +395,7 @@ void main() {
   ]);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e) => {
       if (!containerRef.current || !rendererRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;
