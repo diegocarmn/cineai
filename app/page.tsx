@@ -1,12 +1,13 @@
 import Header from "./components/Header";
 import LightRays from "./components/Lightrays";
-import Button from "./components/Button"; // Assuming you have a Button component
+import Button from "./components/Button"; 
+import { GoArrowRight } from "react-icons/go";
 
 export default function LandingPage() {
   return (
     <>
       <Header />
-      <div className="absolute inset-0 z-0 h-screen w-full">
+      <div className="absolute inset-0 z-0 h-screen w-full pointer-events-none">
         <LightRays
           raysOrigin="top-center"
           raysColor="#ffd900"
@@ -21,15 +22,18 @@ export default function LandingPage() {
         />
       </div>
 
-      <div className="flex flex-col items-center justify-center h-screen px-4 text-white">
-        <h1 className="text-center text-3xl font-heading font-extrabold tracking-tight">
+      <div className="relative z-10 flex flex-col items-center justify-center h-screen px-4 sm:px-15 text-white md:max-w-5xl mx-auto">
+        <h1 className="text-center text-3xl sm:text-4xl md:text-7xl font-heading font-extrabold tracking-tight">
           Discover a smarter way to find what to watch
         </h1>
-        <p className=" text-center mt-4 text-sm font-body">
+        <p className=" text-center mt-4 md:mt-8 text-sm font-body text-white/80 sm:text-base md:text-xl">
           Tired of scrolling forever? Let CineAI do the digging, so you can
           enjoy the best shows and movies faster. Less browsing, more watching.
         </p>
-        <Button className="mt-6 shadow-lg/20 shadow-yellow-400">Get Started</Button>
+        <Button className="flex items-center mt-6 md:mt-10 shadow-xl/20 shadow-yellow-500">
+          <span className="mr-2">Get started</span>
+          <GoArrowRight className="h-5 w-5" />
+        </Button>
       </div>
       <div className="bg-white">aaaa</div>
     </>
