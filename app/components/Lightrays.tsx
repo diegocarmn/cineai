@@ -13,24 +13,6 @@ export type RaysOrigin =
   | "bottom-right"
   | "bottom-left";
 
-interface LightRaysUniforms {
-  iTime: { value: number };
-  iResolution: { value: [number, number] };
-  rayPos: { value: [number, number] };
-  rayDir: { value: [number, number] };
-  raysColor: { value: [number, number, number] };
-  raysSpeed: { value: number };
-  lightSpread: { value: number };
-  rayLength: { value: number };
-  pulsating: { value: number };
-  fadeDistance: { value: number };
-  saturation: { value: number };
-  mousePos: { value: [number, number] };
-  mouseInfluence: { value: number };
-  noiseAmount: { value: number };
-  distortion: { value: number };
-}
-
 interface LightRaysProps {
   raysOrigin?: RaysOrigin;
   raysColor?: string;
