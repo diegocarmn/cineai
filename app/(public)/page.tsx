@@ -37,7 +37,7 @@ export default function LandingPage() {
           onClick={() => signIn("google", { callbackUrl: "/home" })}
           className="mt-6 md:mt-10 shadow-xl/20 shadow-yellow-500"
         >
-          <span className="mr-2">Get started</span>
+          <span className="mr-2 md:text-lg">Get started</span>
           <GoArrowRight className="h-5 w-5" />
         </Button>
       </div>

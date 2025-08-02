@@ -1,11 +1,16 @@
-const HeaderButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+import Link from "next/link";
+
+const HeaderButton: React.FC<{ href: string; children: React.ReactNode }> = ({
+  href,
+  children,
+}) => {
   return (
-    <button
-      onClick={onClick}
-      className="rounded bg-yellow-500 px-4 py-2 text-black transition duration-300 hover:bg-yellow-600"
+    <Link
+      href={href}
+      className="whitespace-nowrap hover:bg-cinema hover:text-black text-sm font-semibold rounded-full px-4 py-2 active:bg-cinema active:text-black transition-all duration-300 ease-out active:scale-95 flex items-center justify-center"
     >
-      Get started
-    </button>
+      {children}
+    </Link>
   );
 };
 
