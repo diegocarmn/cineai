@@ -15,15 +15,15 @@ export default function HomePage() {
           action=""
           className="flex flex-col w-full pt-4 font-body"
         >
-          <label htmlFor="search" className="text-xs font-semibold">
-            Type a movie or show name
+          <label htmlFor="search" className="text-xs font-semibold mb-2 ml-4">
+            Type a movie or show name:
           </label>
           <section className="flex items-center">
             <input
               type="text"
               id="search"
               placeholder="ex. Inception"
-              className="px-4 py-2 font-semibold text-sm rounded-full w-full"
+              className="px-4 py-2 font-semibold bg-white/20 text-sm rounded-full w-full"
             />
 
             <Button type="submit" className="ml-2 w-fit">
