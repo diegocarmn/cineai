@@ -8,7 +8,7 @@ export default function RecommendationsPage() {
           bg-clip-text md:text-7xl
         "
       >
-        What to Watch
+        Get suggestions <br /> on what to watch
       </h1>
       <p className="pt-2 text-body text-base text-balance md:text-xl">
         {`Based on your favorite movies, we think you'll love these!`}

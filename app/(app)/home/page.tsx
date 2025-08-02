@@ -17,8 +17,7 @@ export default async function HomePage() {
         Welcome to CineAI, <br /> {session.user.name}
       </h1>
       <p className="pt-2 text-body text-base text-center text-balance sm:text-lg md:text-xl md:w-auto">
-        Search for movies and shows, add to your list, and get recommendations
-        based on what you like!
+        Search for movies and tv shows you love, add to your favorites list, and get recommendations based on your taste!
       </p>
       <form
         action=""

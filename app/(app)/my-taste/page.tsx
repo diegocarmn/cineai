@@ -8,10 +8,10 @@ export default function MyListPage() {
           bg-clip-text md:text-7xl
         "
       >
-        My List
+        My Taste
       </h1>
       <p className="pt-2 text-body text-base text-balance md:text-xl">
-        {`Here you can find all the movies and shows you've added to your list!`}
+        {`Here you can find all the movies and shows you've added to your favorites list.`}
       </p>
     </div>
   );

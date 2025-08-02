@@ -28,9 +28,9 @@ const Header = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-3">
-          <HeaderButton href="/my-list">My List</HeaderButton>
-          <HeaderButton href="/recommendations">For You</HeaderButton>
-          <HeaderButton href="/home">Search</HeaderButton>
+          <HeaderButton href="/get-suggestions">Get Suggestions</HeaderButton>
+          <HeaderButton href="/my-taste">My Taste</HeaderButton>
+          <HeaderButton href="/home">Add Movies</HeaderButton>
           <AuthButton className="ml-2" />
         </div>
 
@@ -60,17 +60,17 @@ const Header = () => {
       {/* Mobile Menu Drawer */}
       {isOpen && (
         <div className="md:hidden mt-2 backdrop-blur-lg rounded-4xl border border-white/10 p-4 mx-0 flex flex-col gap-3 animate-fade-in-down shadow-lg/30 shadow-black">
-          <HeaderButton href="/my-list" onClick={() => setIsOpen(false)}>
-            My List
-          </HeaderButton>
           <HeaderButton
-            href="/recommendations"
+            href="/get-suggestions"
             onClick={() => setIsOpen(false)}
           >
-            For You
+            Get Suggestions
+          </HeaderButton>
+          <HeaderButton href="/my-taste" onClick={() => setIsOpen(false)}>
+            My Taste
           </HeaderButton>
           <HeaderButton href="/home" onClick={() => setIsOpen(false)}>
-            Search
+            Add Movies
           </HeaderButton>
           <AuthButton className="ml-2" />
         </div>
