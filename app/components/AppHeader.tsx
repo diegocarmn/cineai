@@ -2,14 +2,12 @@
 
 import { RiMovie2AiLine } from "react-icons/ri";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-import { useSession, signIn, signOut } from "next-auth/react";
 import HeaderButton from "./HeaderButton";
 import Link from "next/link";
 import { useState } from "react";
+import AuthButton from "./AuthButton";
 
 const Header = () => {
-  const { data: session } = useSession();
-  const isLoggedIn = !!session;
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -33,16 +31,7 @@ const Header = () => {
           <HeaderButton href="/my-list">My List</HeaderButton>
           <HeaderButton href="/recommendations">For You</HeaderButton>
           <HeaderButton href="/home">Search</HeaderButton>
-          <button
-            onClick={() =>
-              isLoggedIn
-                ? signOut()
-                : signIn("google", { callbackUrl: "/home" })
-            }
-            className="whitespace-nowrap bg-white text-black text-sm font-semibold rounded-full transition-all duration-300 ease-out active:scale-95 px-4 py-2 cursor-pointer"
-          >
-            {isLoggedIn ? "Logout" : "Login"}
-          </button>
+          <AuthButton className="ml-2" />
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -70,7 +59,7 @@ const Header = () => {
 
       {/* Mobile Menu Drawer */}
       {isOpen && (
-        <div className="md:hidden mt-2 backdrop-blur-lg rounded-4xl border border-white/10 p-4 mx-0 flex flex-col gap-3 animate-fade-in-down">
+        <div className="md:hidden mt-2 backdrop-blur-lg rounded-4xl border border-white/10 p-4 mx-0 flex flex-col gap-3 animate-fade-in-down shadow-lg/30 shadow-black">
           <HeaderButton href="/my-list" onClick={() => setIsOpen(false)}>
             My List
           </HeaderButton>
@@ -83,16 +72,7 @@ const Header = () => {
           <HeaderButton href="/home" onClick={() => setIsOpen(false)}>
             Search
           </HeaderButton>
-          <button
-            onClick={() =>
-              isLoggedIn
-                ? signOut()
-                : signIn("google", { callbackUrl: "/home" })
-            }
-            className="whitespace-nowrap bg-white text-black text-sm font-semibold rounded-full transition-all duration-300 ease-out active:scale-95 px-4 py-2"
-          >
-            {isLoggedIn ? "Logout" : "Login"}
-          </button>
+          <AuthButton className="ml-2" />
         </div>
       )}
     </header>

@@ -1,5 +1,7 @@
 import Button from "../../components/Button";
 import { LuSearch } from "react-icons/lu";
+import { FaSearch } from "react-icons/fa";
+import { IoSearch } from "react-icons/io5";
 
 export default function HomePage() {
   return (
@@ -38,8 +40,8 @@ export default function HomePage() {
             "
           />
 
-          <Button type="submit" className="ml-2 md:ml-4 w-fit md:py-3 md:px-8">
-            <LuSearch className="mr-2 h-4 w-4" />
+          <Button type="submit" className="ml-2 md:ml-4 w-fit md:py-3 md:px-8 hover:shadow-xl/10 shadow-cinema">
+            <IoSearch className="mr-2 h-4 w-4" />
             Search
           </Button>
         </section>

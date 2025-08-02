@@ -1,16 +1,14 @@
 "use client";
 
 import { RiMovie2AiLine } from "react-icons/ri";
-import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
+import AuthButton from "./AuthButton";
 
 const Header = () => {
-  const { data: session } = useSession();
-  const isLoggedIn = !!session;
   return (
     <header className="fixed top-4 inset-x-0 z-50 mx-4 sm:mx-15">
       <div className="mx-auto max-w-5xl  backdrop-blur-lg rounded-full px-2  py-2 flex items-center justify-between border border-white/10">
-        <Link className="flex items-center px-4" href="/">
+        <Link className="flex items-center px-4" href="/home">
           <RiMovie2AiLine className="w-6 h-6 text-cinema mr-1" />
           <h1
             className="font-bold font-heading text-base whitespace-nowrap text-transparent 
@@ -20,15 +18,7 @@ const Header = () => {
             CineAI
           </h1>
         </Link>
-
-        <button
-          onClick={() =>
-            isLoggedIn ? signOut() : signIn("google", { callbackUrl: "/home" })
-          }
-          className="whitespace-nowrap cursor-pointer bg-white text-black text-sm font-semibold rounded-full transition-all duration-300 ease-out active:scale-95 px-4 py-2"
-        >
-          {isLoggedIn ? "Logout" : "Login"}
-        </button>
+        <AuthButton className="ml-2" />
       </div>
     </header>
   );
