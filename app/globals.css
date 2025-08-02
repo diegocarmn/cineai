@@ -4,6 +4,10 @@ body {
   background-color: rgb(0, 0, 0);
 }
 
+@theme {
+  --color-cinema: #FFD900;
+}
+
 @layer utilities {
   .font-heading {
     font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;

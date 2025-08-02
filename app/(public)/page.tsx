@@ -1,8 +1,8 @@
 "use client";
 
-import Header from "./components/PublicHeader";
-import LightRays from "./components/Lightrays";
-import Button from "./components/Button";
+import Header from "../components/PublicHeader";
+import LightRays from "../components/Lightrays";
+import Button from "../components/Button";
 import { GoArrowRight } from "react-icons/go";
 import { signIn } from "next-auth/react";
 
@@ -26,10 +26,10 @@ export default function LandingPage() {
       </div>
 
       <div className="relative z-10 flex flex-col items-center justify-center h-screen px-4 sm:px-15 text-white md:max-w-5xl mx-auto">
-        <h1 className="text-center text-3xl sm:text-4xl md:text-7xl font-heading">
+        <h1 className="text-center text-3xl sm:text-4xl md:text-7xl font-heading text-balance">
           Discover a smarter way to find what to watch
         </h1>
-        <p className="text-center mt-4 md:mt-8 text-sm font-body text-white/80 sm:text-base md:text-xl">
+        <p className="text-center mt-4 md:mt-8 text-sm font-body text-white/80 sm:text-base md:text-xl text-balance">
           Tired of scrolling forever? Let CineAI do the digging, so you can
           enjoy the best shows and movies faster. Less browsing, more watching.
         </p>
