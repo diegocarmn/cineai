@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "../components/PublicHeader";
-import LightRays from "../components/Lightrays";
+import LightRays from "../components/LightraysBackground";
 import Button from "../components/Button";
 import { GoArrowRight } from "react-icons/go";
 import { signIn } from "next-auth/react";

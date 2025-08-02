@@ -63,16 +63,17 @@ const Header = () => {
           <HeaderButton
             href="/get-suggestions"
             onClick={() => setIsOpen(false)}
+            className="py-4"
           >
             Get Suggestions
           </HeaderButton>
-          <HeaderButton href="/my-taste" onClick={() => setIsOpen(false)}>
+          <HeaderButton href="/my-taste" onClick={() => setIsOpen(false)} className="py-4">
             My Taste
           </HeaderButton>
-          <HeaderButton href="/home" onClick={() => setIsOpen(false)}>
+          <HeaderButton href="/home" onClick={() => setIsOpen(false)} className="py-4">
             Add Movies
           </HeaderButton>
-          <AuthButton className="ml-2" />
+          <AuthButton className="ml-2 py-4" />
         </div>
       )}
     </header>
