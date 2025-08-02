@@ -7,6 +7,8 @@ body {
 @layer utilities {
   .font-heading {
     font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.015em;
   }
   .font-body {
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
