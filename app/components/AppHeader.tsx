@@ -47,20 +47,42 @@ const Header = () => {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden text-cinema text-2xl mx-2"
+          className="md:hidden text-cinema text-2xl mx-2 relative w-8 h-8"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Menu"
         >
-          {isOpen ? <HiX /> : <HiOutlineMenu />}
+          <span
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${
+              isOpen ? "opacity-0 scale-90" : "opacity-100 scale-100"
+            }`}
+          >
+            <HiOutlineMenu />
+          </span>
+          <span
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${
+              isOpen ? "opacity-100 scale-100" : "opacity-0 scale-90"
+            }`}
+          >
+            <HiX />
+          </span>
         </button>
       </div>
 
       {/* Mobile Menu Drawer */}
       {isOpen && (
-        <div className="md:hidden mt-2 backdrop-blur-lg rounded-4xl border border-white/10 p-4 mx-4 flex flex-col gap-3 animate-fade-in-down">
-          <HeaderButton href="/my-list">My List</HeaderButton>
-          <HeaderButton href="/recommendations">For You</HeaderButton>
-          <HeaderButton href="/home">Search</HeaderButton>
+        <div className="md:hidden mt-2 backdrop-blur-lg rounded-4xl border border-white/10 p-4 mx-0 flex flex-col gap-3 animate-fade-in-down">
+          <HeaderButton href="/my-list" onClick={() => setIsOpen(false)}>
+            My List
+          </HeaderButton>
+          <HeaderButton
+            href="/recommendations"
+            onClick={() => setIsOpen(false)}
+          >
+            For You
+          </HeaderButton>
+          <HeaderButton href="/home" onClick={() => setIsOpen(false)}>
+            Search
+          </HeaderButton>
           <button
             onClick={() =>
               isLoggedIn

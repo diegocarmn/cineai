@@ -11,7 +11,7 @@ export default function RecommendationsPage() {
         Your Recommendations
       </h1>
       <p className="pt-2 text-body text-base text-center text-balance md:text-xl">
-        Based on your viewing history, we think you'll love these!
+        {`Based on your viewing history, we think you'll love these!`}
       </p>
     </div>
   );
