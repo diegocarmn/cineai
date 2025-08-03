@@ -37,15 +37,6 @@ export default function HomeLayout({
           className={`${geist.variable} ${inter.variable} ${spaceGrotesk.variable} antialiased`}
         >
           <div className="relative min-h-screen bg-neutral-950 text-white">
-            <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-              <NoiseBackground
-                patternSize={250}
-                patternScaleX={1}
-                patternScaleY={1}
-                patternRefreshInterval={2}
-                patternAlpha={5}
-              />
-            </div>
             <div className="relative z-20">
               <Header />
               <main className="px-4 pt-30">{children}</main>
