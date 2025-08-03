@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 mx-4">
-      <div className="mx-auto max-w-5xl backdrop-blur-lg rounded-full px-2 py-2 flex items-center justify-between border border-white/10">
+      <div className="mx-auto max-w-5xl backdrop-blur-lg bg-black/30 rounded-full px-2 py-2 flex items-center justify-between border border-white/10">
         <Link href="/home">
           <span className="flex items-center py-1 md:py-0 mx-2">
             <RiMovie2AiLine className="w-6 h-6 text-cinema mr-1" />
@@ -59,7 +59,7 @@ const Header = () => {
 
       {/* Mobile Menu Drawer */}
       {isOpen && (
-        <div className="md:hidden mt-2 backdrop-blur-lg rounded-4xl border border-white/10 p-4 mx-0 flex flex-col gap-3 animate-fade-in-down shadow-lg/30 shadow-black">
+        <div className="md:hidden mt-2 backdrop-blur-lg bg-black/40 rounded-4xl border border-white/10 p-4 mx-0 flex flex-col gap-3 animate-fade-in-down shadow-lg/30 shadow-black">
           <HeaderButton
             href="/get-suggestions"
             onClick={() => setIsOpen(false)}

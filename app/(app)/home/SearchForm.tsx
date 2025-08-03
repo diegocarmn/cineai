@@ -3,13 +3,15 @@
 import { IoSearch } from "react-icons/io5";
 import Button from "../../components/Button";
 import { useState } from "react";
+import MediaCard from "../../components/MediaCard";
 
-type Movie = {
+export type Movie = {
   id: number;
   title: string;
   release_date: string;
   overview: string;
   poster_path: string | null;
+  backdrop_path: string | null;
 };
 
 export default function SearchForm() {
@@ -19,11 +21,12 @@ export default function SearchForm() {
   async function searchMovies(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    setMovieName(formData.get("search") as string);
-    if (!movieName) return;
-
+    const name = formData.get("search") as string;
+    if (!name) return;
+    
+    setMovieName(name);
     const res = await fetch(
-      `/api/search?query=${encodeURIComponent(movieName)}`
+      `/api/search?query=${encodeURIComponent(name)}`
     );
     const data = await res.json();
     setMovies(data.results);
@@ -65,13 +68,11 @@ export default function SearchForm() {
       <div>
         {movies.length > 0 && (
           <>
-            <h2>Search results for "{movieName}"</h2>
+            <h2 className="pt-10 md:pt-15">Search results for "{movieName}"</h2>
             <ul className="mt-4">
               {movies.map((movie: Movie, index: number) => (
-                <li key={index} className="py-2 border-b border-white/10">
-                  {movie.title}
-                  <p>{movie.release_date}</p>
-                  <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
+                <li key={index} className="pb-4">
+                  <MediaCard movie={movie} />
                 </li>
               ))}
             </ul>
