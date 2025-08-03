@@ -19,9 +19,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  if (pathname === "/" && session) {
+    return NextResponse.redirect(new URL("/home", request.url));
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/home/:path*", "/home", "/my-taste/:path*", "/my-taste", "/get-suggestions/:path*", "/get-suggestions"],
+  matcher: ["/home/:path*", "/home", "/my-taste/:path*", "/my-taste", "/get-suggestions/:path*", "/get-suggestions", "/"],
 };
+
