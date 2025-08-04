@@ -40,21 +40,21 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
 
   return (
     <div
-      className="relative w-50 h-80 rounded-3xl overflow-hidden flex items-end outline outline-white/20"
+      className="relative mx-2 mb-4 w-50 h-80 rounded-3xl overflow-hidden flex items-end outline outline-white/20"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <Button className="absolute top-2 right-2 drop-shadow-lg">
+      <Button className="absolute top-2 right-2 drop-shadow-lg hover:shadow-xl/10 shadow-cinema">
         <IoMdAdd className="h-4 w-4 mr-1" />
         Add
       </Button>
-      <div className="z-10 text-white bg-black/40 w-full backdrop-blur-lg px-4 pt-1 pb-4">
+      <div className="z-10 text-white bg-black/40 w-full h-1/3 backdrop-blur-lg px-4 pt-1 pb-4">
         <h3
           title={movie.title}
-          className="text-lg font-semibold drop-shadow line-clamp-2 overflow-hidden text-ellipsis"
+          className="text-lg font-semibold drop-shadow line-clamp-1 overflow-hidden text-ellipsis"
         >
           {movie.title}
         </h3>

@@ -69,10 +69,10 @@ export default function SearchForm() {
       <div>
         {movies.length > 0 && (
           <>
-            <h2 className="pt-10 md:pt-15 text-center">Search results for "{movieName}"</h2>
-            <ul className="mt-4">
+            <h2 className="pt-10 md:pt-15 font-semibold text-center">{`Search results for "${movieName}"`}</h2>
+            <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20">
               {movies.map((movie: Movie, index: number) => (
-                <li key={index} className="pb-4">
+                <li key={index} className="pb-2">
                   <MediaCard movie={movie} />
                 </li>
               ))}
