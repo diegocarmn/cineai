@@ -85,7 +85,7 @@ export default function SearchForm() {
             className="pt-10 md:pt-15 font-semibold text-center text-neutral-500 max-w-xs mx-auto truncate"
             title={movieName}
           >
-            No results found for "{movieName}"
+            {`No results found for "${movieName}"`}
           </p>
         )}
       </div>
