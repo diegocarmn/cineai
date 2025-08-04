@@ -1,5 +1,4 @@
 import Header from "../components/AppHeader";
-import NoiseBackground from "../components/NoiseBackground";
 import type { Metadata } from "next";
 import { Geist, Inter, Space_Grotesk } from "next/font/google";
 import "../globals.css";
