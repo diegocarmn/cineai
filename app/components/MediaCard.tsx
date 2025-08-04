@@ -60,7 +60,7 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
             {movie.title}
           </h3>
 
-          <p className="text-sm text-neutral-300 drop-shadow mb-2">
+          <p className="text-sm text-neutral-300 drop-shadow mb-2 font-body">
             {movie.release_date ? movie.release_date.slice(0, 4) : "N/A"}
           </p>
         </div>
@@ -68,7 +68,7 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
           {movie.genre_ids?.slice(0, 2).map((id) => (
             <span
               key={id}
-              className="bg-white/10 px-2 mr-2 pb-1 pt-0.5 rounded-full leading-none text-xs"
+              className="bg-white/10 font-body px-2 mr-2 py-1 rounded-full leading-none text-xs"
             >
               {genreMap.get(id)}
             </span>

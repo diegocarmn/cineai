@@ -71,7 +71,7 @@ export default function SearchForm() {
         {Array.isArray(movies) && movies.length > 0 && (
           <>
             <h2 className="pt-10 font-semibold md:text-lg text-center">{`Search results for "${movieName}"`}</h2>
-            <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10">
+            <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5">
               {movies.map((movie: Movie, index: number) => (
                 <li key={index} className="pb-2">
                   <MediaCard movie={movie} />
@@ -82,7 +82,7 @@ export default function SearchForm() {
         )}
         {Array.isArray(movies) && movies.length === 0 && movieName !== "" && (
           <p
-            className="pt-10 md:pt-15 font-semibold text-center text-neutral-500 max-w-xs mx-auto truncate"
+            className="pt-10 md:pt-15 md:text-lg font-semibold text-center text-neutral-500 max-w-xs mx-auto truncate"
             title={movieName}
           >
             {`No results found for "${movieName}"`}
