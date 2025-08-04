@@ -12,6 +12,7 @@ export type Movie = {
   overview: string;
   poster_path: string | null;
   backdrop_path: string | null;
+  genre_ids: number[];
 };
 
 export default function SearchForm() {
@@ -23,7 +24,7 @@ export default function SearchForm() {
     const formData = new FormData(event.currentTarget);
     const name = formData.get("search") as string;
     if (!name) return;
-    
+
     setMovieName(name);
     const res = await fetch(
       `/api/search?query=${encodeURIComponent(name)}`
@@ -68,7 +69,7 @@ export default function SearchForm() {
       <div>
         {movies.length > 0 && (
           <>
-            <h2 className="pt-10 md:pt-15">Search results for "{movieName}"</h2>
+            <h2 className="pt-10 md:pt-15 text-center">Search results for "{movieName}"</h2>
             <ul className="mt-4">
               {movies.map((movie: Movie, index: number) => (
                 <li key={index} className="pb-4">
