@@ -25,12 +25,13 @@ export default function SearchForm() {
     const name = formData.get("search") as string;
     if (!name) return;
 
-    setMovieName(name);
+    
     const res = await fetch(
       `/api/search?query=${encodeURIComponent(name)}`
     );
     const data = await res.json();
     setMovies(Array.isArray(data.results) ? data.results : []);
+    setMovieName(name);
   }
 
   return (
@@ -78,6 +79,14 @@ export default function SearchForm() {
               ))}
             </ul>
           </>
+        )}
+        {Array.isArray(movies) && movies.length === 0 && movieName !== "" && (
+          <p
+            className="pt-10 md:pt-15 font-semibold text-center text-neutral-500 max-w-xs mx-auto truncate"
+            title={movieName}
+          >
+            No results found for "{movieName}"
+          </p>
         )}
       </div>
     </>
