@@ -48,7 +48,7 @@ export default function SearchForm() {
             type="text"
             id="search"
             name="search"
-            placeholder="ex. Inception"
+            placeholder="e.g. Fantastic Four"
             className="
               px-4 py-2 md:py-3 md:px-5 w-full text-sm font-normal 
               rounded-full bg-white/10 backdrop-blur-lg
@@ -70,7 +70,7 @@ export default function SearchForm() {
       <div>
         {Array.isArray(movies) && movies.length > 0 && (
           <>
-            <h2 className="pt-10 md:pt-15 font-semibold text-center">{`Search results for "${movieName}"`}</h2>
+            <h2 className="pt-10 font-semibold md:text-lg text-center">{`Search results for "${movieName}"`}</h2>
             <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10">
               {movies.map((movie: Movie, index: number) => (
                 <li key={index} className="pb-2">

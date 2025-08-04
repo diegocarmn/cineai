@@ -40,7 +40,7 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
 
   return (
     <div
-      className="relative mx-2 mb-4 w-50 h-80 rounded-3xl overflow-hidden flex items-end outline outline-white/20 hover:scale-101 transition-transform duration-100 ease-in-out cursor-pointer"
+      className="relative mx-2 mb-4 w-60 h-96 rounded-3xl overflow-hidden flex items-end outline outline-white/20 hover:scale-110 transition-transform duration-100 ease-in-out"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
@@ -51,25 +51,29 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
         <IoMdAdd className="h-4 w-4 mr-1" />
         Add
       </Button>
-      <div className="z-10 text-white bg-black/40 w-full h-1/3 backdrop-blur-lg px-4 pt-1 pb-4">
-        <h3
-          title={movie.title}
-          className="text-lg font-semibold drop-shadow line-clamp-1 overflow-hidden text-ellipsis"
-        >
-          {movie.title}
-        </h3>
-
-        <p className="text-sm text-neutral-300 drop-shadow mb-2">
-          {movie.release_date?.slice(0, 4)}
-        </p>
-        {movie.genre_ids?.slice(0, 2).map((id) => (
-          <span
-            key={id}
-            className="bg-white/10 px-2 mr-2 pb-1 pt-0.5 rounded-full leading-none text-xs"
+      <div className="z-10 text-white bg-black/40 w-full h-1/4 backdrop-blur-lg px-4 pt-2 pb-4 flex flex-col justify-between">
+        <div>
+          <h3
+            title={movie.title}
+            className="text-xl drop-shadow line-clamp-1 overflow-hidden text-ellipsis font-body font-semibold"
           >
-            {genreMap.get(id)}
-          </span>
-        ))}
+            {movie.title}
+          </h3>
+
+          <p className="text-sm text-neutral-300 drop-shadow mb-2">
+            {movie.release_date ? movie.release_date.slice(0, 4) : "N/A"}
+          </p>
+        </div>
+        <div className="flex">
+          {movie.genre_ids?.slice(0, 2).map((id) => (
+            <span
+              key={id}
+              className="bg-white/10 px-2 mr-2 pb-1 pt-0.5 rounded-full leading-none text-xs"
+            >
+              {genreMap.get(id)}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
