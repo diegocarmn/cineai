@@ -40,7 +40,7 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
 
   return (
     <div
-      className="relative mx-2 mb-4 w-50 h-80 rounded-3xl overflow-hidden flex items-end outline outline-white/20"
+      className="relative mx-2 mb-4 w-50 h-80 rounded-3xl overflow-hidden flex items-end outline outline-white/20 hover:scale-101 transition-transform duration-100 ease-in-out cursor-pointer"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",

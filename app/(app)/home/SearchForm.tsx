@@ -30,7 +30,7 @@ export default function SearchForm() {
       `/api/search?query=${encodeURIComponent(name)}`
     );
     const data = await res.json();
-    setMovies(data.results);
+    setMovies(Array.isArray(data.results) ? data.results : []);
   }
 
   return (
@@ -67,10 +67,10 @@ export default function SearchForm() {
         </section>
       </form>
       <div>
-        {movies.length > 0 && (
+        {Array.isArray(movies) && movies.length > 0 && (
           <>
             <h2 className="pt-10 md:pt-15 font-semibold text-center">{`Search results for "${movieName}"`}</h2>
-            <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20">
+            <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10">
               {movies.map((movie: Movie, index: number) => (
                 <li key={index} className="pb-2">
                   <MediaCard movie={movie} />
