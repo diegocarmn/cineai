@@ -35,7 +35,7 @@ export default function LandingPage() {
         </p>
         <Button
           onClick={() => signIn("google", { callbackUrl: "/home" })}
-          className="mt-6 md:mt-10 shadow-xl/20 shadow-cinema hover:shadow-xl/30"
+          className="mt-6 md:mt-10 shadow-xl/20 shadow-cinema hover:scale-105 transition-transform duration-100"
         >
           <span className="mr-2 md:text-lg">Get started</span>
           <GoArrowRight className="h-5 w-5" />

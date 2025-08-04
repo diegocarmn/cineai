@@ -38,6 +38,11 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : "/default-media.png";
 
+    function addToFavorites() {
+    // Logic to add the movie to favorites
+    console.log(`Adding ${movie.title} to favorites`);
+  }
+
   return (
     <div
       className="relative mx-2 mb-4 w-60 h-96 rounded-3xl overflow-hidden flex items-end outline outline-white/20 hover:scale-110 transition-transform duration-100 ease-in-out"
@@ -47,7 +52,8 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
         backgroundPosition: "center",
       }}
     >
-      <Button className="absolute top-2 right-2 drop-shadow-lg hover:shadow-xl/10 shadow-cinema">
+      <Button className="absolute top-2 right-2 drop-shadow-lg hover:shadow-xl/10 shadow-cinema"
+      onClick={addToFavorites}>
         <IoMdAdd className="h-4 w-4 mr-1" />
         Add
       </Button>

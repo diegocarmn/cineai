@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  image         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  emailVerified DateTime?
+  accounts      Account[]
+  sessions      Session[]
+  favorites     Favorite[]
+}
+
+model Movie {
+  id           String     @id @default(cuid())
+  tmdbId       Int
+  title        String
+  description  String
+  releaseDate  DateTime
+  posterPath   String?
+  backdropPath String?
+  genreIds     Int[] // se for usar IDs
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  favoritedBy  Favorite[] // ← aqui a relação reversa
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  movieId   String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, movieId]) // impede favoritar duas vezes o mesmo filme
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
