@@ -1,3 +1,4 @@
+// Esse é um script manual de seed/teste. NÃO é usado pela aplicação.
 
 import { PrismaClient } from "@prisma/client";
 

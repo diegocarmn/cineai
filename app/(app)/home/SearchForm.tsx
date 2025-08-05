@@ -2,7 +2,7 @@
 
 import { IoSearch } from "react-icons/io5";
 import Button from "../../components/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MediaCard from "../../components/MediaCard";
 
 export type Movie = {
@@ -18,6 +18,17 @@ export type Movie = {
 export default function SearchForm() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [movieName, setMovieName] = useState<string>("");
+  const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    async function fetchFavorites() {
+      const res = await fetch("/api/user-favorites");
+      const data = await res.json();
+      setFavoriteIds(data.favorites);
+    }
+
+    fetchFavorites();
+  }, []);
 
   async function searchMovies(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,7 +36,6 @@ export default function SearchForm() {
     const name = formData.get("search") as string;
     if (!name) return;
 
-    
     const res = await fetch(
       `/api/search?query=${encodeURIComponent(name)}`
     );
@@ -74,7 +84,10 @@ export default function SearchForm() {
             <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5">
               {movies.map((movie: Movie, index: number) => (
                 <li key={index} className="pb-2">
-                  <MediaCard movie={movie} />
+                  <MediaCard
+                    movie={movie}
+                    isInitiallyFavorite={favoriteIds.includes(movie.id)}
+                  />
                 </li>
               ))}
             </ul>

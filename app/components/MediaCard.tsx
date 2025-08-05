@@ -1,7 +1,9 @@
-'use client';
+"use client";
 
 import Button from "./Button";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoIosRemoveCircle } from "react-icons/io";
+import { IoReload } from "react-icons/io5";
+import { useState } from "react";
 
 type Movie = {
   id: number;
@@ -11,6 +13,12 @@ type Movie = {
   poster_path: string | null;
   backdrop_path: string | null;
   genre_ids: number[];
+};
+
+type MediaCardProps = {
+  movie: Movie;
+  onRemove?: () => void;
+  isInitiallyFavorite?: boolean;
 };
 
 const genreMap = new Map<number, string>([
@@ -35,38 +43,65 @@ const genreMap = new Map<number, string>([
   [37, "Western"],
 ]);
 
-const MediaCard = ({ movie }: { movie: Movie }) => {
+const MediaCard = ({
+  movie,
+  onRemove,
+  isInitiallyFavorite = false,
+}: MediaCardProps) => {
+  const [isFavorite, setIsFavorite] = useState(isInitiallyFavorite);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleToggleFavorite() {
+    setIsLoading(true);
+
+    if (isFavorite) {
+      const res = await fetch("/api/favorite", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tmdbId: movie.id }),
+      });
+
+      if (res.ok) {
+        setIsFavorite(false);
+        onRemove?.();
+      } else {
+        console.error("Erro ao remover");
+      }
+    } else {
+      const res = await fetch("/api/favorite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tmdbId: movie.id,
+          title: movie.title,
+          description: movie.overview,
+          releaseDate: movie.release_date,
+          posterPath: movie.poster_path,
+          backdropPath: movie.backdrop_path,
+          genreIds: movie.genre_ids,
+        }),
+      });
+
+      if (res.ok) {
+        setIsFavorite(true);
+      } else {
+        console.error("Erro ao favoritar");
+      }
+    }
+    setIsLoading(false);
+  }
+
   const bgImage = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : "/default-media.png";
 
-  async function addToFavorites() {
-    const res = await fetch("/api/favorite", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        tmdbId: movie.id,
-        title: movie.title,
-        description: movie.overview,
-        releaseDate: movie.release_date,
-        posterPath: movie.poster_path,
-        backdropPath: movie.backdrop_path,
-        genreIds: movie.genre_ids,
-      }),
-    });
-
-    if (res.ok) {
-      console.log("Favorited!");
-    } else {
-      console.error("Failed to favorite.");
-    }
-  }
-
   return (
     <div
-      className="relative mx-2 mb-4 w-60 h-96 rounded-3xl overflow-hidden flex items-end outline outline-white/20 hover:scale-110 transition-transform duration-100 ease-in-out"
+      className="relative mx-2 mb-4 w-60 h-96 rounded-3xl overflow-hidden flex items-end outline outline-white/20 hover:scale-110 transition-transform duration-100 ease-in-out "
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
@@ -74,12 +109,33 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
       }}
     >
       <Button
-        className="absolute top-2 right-2 drop-shadow-lg hover:shadow-xl/10 shadow-cinema"
-        onClick={addToFavorites}
+        className="absolute top-2 right-2 drop-shadow-lg"
+        onClick={handleToggleFavorite}
+        secondary={isFavorite}
+        disabled={isLoading} 
       >
-        <IoMdAdd className="h-4 w-4 mr-1" />
-        Add
+        {isLoading ? (
+          <>
+            <IoReload className="h-4 w-4 animate-spin" />
+            {isFavorite ? (
+              <span className="ml-2">Removing...</span>
+            ) : (
+              <span className="ml-2">Adding...</span>
+            )}
+          </>
+        ) : isFavorite ? (
+          <>
+            <IoIosRemoveCircle className="h-4 w-4 mr-1" />
+            Remove
+          </>
+        ) : (
+          <>
+            <IoMdAdd className="h-4 w-4 mr-1" />
+            Add
+          </>
+        )}
       </Button>
+
       <div className="z-10 text-white bg-black/40 w-full h-1/4 backdrop-blur-lg px-4 pt-2 pb-4 flex flex-col justify-between">
         <div>
           <h3
