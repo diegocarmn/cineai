@@ -26,7 +26,7 @@ const Button = ({
         text-sm font-semibold font-body
         tracking-tight rounded-full px-4 py-2
         transition-all duration-300 ease-out
-        active:scale-95 flex items-center justify-center
+        active:scale-95 flex items-center justify-center cursor-pointer
         ${className}
       `}
       type={type}
