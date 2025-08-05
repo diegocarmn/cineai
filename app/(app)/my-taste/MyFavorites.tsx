@@ -3,7 +3,21 @@
 import { useState } from "react";
 import MediaCard from "../../components/MediaCard";
 
-export default function MyTasteClient({ favorites }: { favorites: any[] }) {
+type Movie = {
+  tmdbId: number;
+  title: string;
+  releaseDate: string | Date;
+  description: string;
+  posterPath: string | null;
+  backdropPath: string | null;
+  genreIds: number[];
+};
+
+type Favorite = {
+  movie: Movie;
+};
+
+export default function MyTasteClient({ favorites }: { favorites: Favorite[] }) {
   const [favoriteMovies, setFavoriteMovies] = useState(favorites);
 
   return (

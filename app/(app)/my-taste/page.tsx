@@ -1,6 +1,5 @@
 import { auth } from "../../api/auth/[...nextauth]/auth";
 import { prisma } from "@/prisma/prisma";
-import MediaCard from "../../components/MediaCard";
 import MyFavorites from "./MyFavorites"
 
 export default async function MyListPage() {
