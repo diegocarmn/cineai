@@ -36,13 +36,7 @@ export default async function MyListPage() {
           favorites.map((fav) => {
             const movie = fav.movie;
 
-            if (!movie) {
-              return (
-                <div className="text-red-500">
-                  Filme não encontrado no fav.movie
-                </div>
-              );
-            }
+            if (!movie) return null;
 
             return (
               <MediaCard
