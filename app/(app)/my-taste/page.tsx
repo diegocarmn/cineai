@@ -28,20 +28,10 @@ export default async function MyListPage() {
         {`Here you can find all the movies and shows you've added to your
         favorites list.`}
       </p>
-      <pre className="text-white text-sm">
-        {JSON.stringify(
-          { id: session.user.id, email: session.user.email, favorites },
-          null,
-          2
-        )}
-      </pre>
-      <pre className="text-white text-sm">
-        {JSON.stringify({ id: session.user.id, favorites }, null, 2)}
-      </pre>
 
       <div className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5 text-left">
         {favorites.length === 0 ? (
-          <p className="text-white mt-10">Nenhum filme favoritado ainda.</p>
+          <p className="text-white mt-10">Add movies to your taste on the homepage.</p>
         ) : (
           favorites.map((fav) => {
             const movie = fav.movie;
