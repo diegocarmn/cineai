@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   }: MovieBody = await req.json();
 
   try {
-    const existing = await prisma.movie.findUnique({
+    const existing = await prisma.movie.findFirst({
       where: {
         tmdbId: Number(tmdbId), // força tipo seguro
       },
