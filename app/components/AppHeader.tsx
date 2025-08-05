@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import AuthButton from "./AuthButton";
 
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 

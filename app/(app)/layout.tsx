@@ -22,6 +22,9 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "CineAI - Home",
   description: "Find and explore movies with CineAI",
+  icons: {
+    icon: "/favicon.png",
+  }
 };
 
 export default function HomeLayout({

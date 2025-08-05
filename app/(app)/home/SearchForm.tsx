@@ -5,6 +5,7 @@ import Button from "../../components/Button";
 import { useState, useEffect } from "react";
 import MediaCard from "../../components/MediaCard";
 
+
 export type Movie = {
   id: number;
   title: string;
@@ -48,7 +49,7 @@ export default function SearchForm() {
     <>
       <form
         onSubmit={searchMovies}
-        className="flex flex-col w-full md:w-2xl pt-10 md:pt-15 font-body"
+        className="flex flex-col w-full md:w-2xl sm:px-2 pt-10 md:pt-15 font-body"
       >
         <label htmlFor="search" className="sr-only">
           Type a movie name
@@ -60,7 +61,7 @@ export default function SearchForm() {
             name="search"
             placeholder="e.g. Fantastic Four"
             className="
-              px-4 py-2 md:py-3 md:px-5 w-full text-sm font-normal 
+              px-4 py-2 sm:py-3 sm:px-5 w-full text-sm font-normal 
               rounded-full bg-white/10 backdrop-blur-lg
               border border-transparent 
               focus:outline-none
@@ -70,7 +71,7 @@ export default function SearchForm() {
 
           <Button
             type="submit"
-            className="ml-2 md:ml-4 w-fit md:py-3 md:px-8 hover:shadow-xl/10 shadow-cinema"
+            className="ml-2 md:ml-4 w-fit sm:py-3 sm:px-8 hover:shadow-xl/10 shadow-cinema"
           >
             <IoSearch className="mr-2 h-4 w-4" />
             Search

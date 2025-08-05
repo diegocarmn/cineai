@@ -1,6 +1,6 @@
 import { auth } from "../../api/auth/[...nextauth]/auth";
 import { prisma } from "@/prisma/prisma";
-import MyFavorites from "./MyFavorites"
+import MyFavorites from "./MyFavorites";
 
 export default async function MyListPage() {
   const session = await auth();
@@ -10,7 +10,5 @@ export default async function MyListPage() {
     include: { movie: true },
   });
 
-  return (
-    <MyFavorites favorites={favorites} />
-  );
+  return <MyFavorites favorites={favorites} />;
 }
