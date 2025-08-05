@@ -26,8 +26,8 @@ export default async function MyListPage() {
       </h1>
 
       <p className="pt-2 text-body text-base text-balance md:text-xl">
-        Here you can find all the movies and shows you've added to your
-        favorites list.
+        {`Here you can find all the movies and shows you've added to your
+        favorites list.`}
       </p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5">
