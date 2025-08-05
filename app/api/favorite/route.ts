@@ -2,7 +2,6 @@ import { auth } from "@/app/api/auth/[...nextauth]/auth";
 import { prisma } from "@/prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-// Define os tipos do corpo da requisição
 type MovieBody = {
   tmdbId: number;
   title: string;
@@ -31,19 +30,23 @@ export async function POST(req: NextRequest) {
   }: MovieBody = await req.json();
 
   try {
-    const movie = await prisma.movie.upsert({
-      where: { tmdbId: Number(tmdbId) }, // forçando tipo seguro
-      update: {},
-      create: {
-        tmdbId: Number(tmdbId),
-        title,
-        description,
-        releaseDate: new Date(releaseDate),
-        posterPath,
-        backdropPath,
-        genreIds,
-      },
+    const existing = await prisma.movie.findUnique({
+      where: { tmdbId },
     });
+
+    const movie = existing
+      ? existing
+      : await prisma.movie.create({
+          data: {
+            tmdbId,
+            title,
+            description,
+            releaseDate: new Date(releaseDate),
+            posterPath,
+            backdropPath,
+            genreIds,
+          },
+        });
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
