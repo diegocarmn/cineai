@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     "TMDb",
     "smart watchlist",
   ],
-  authors: [{ name: "CineAI Team", url: "https://cineai.vercel.app" }],
-  creator: "CineAI",
+  authors: [{ name: "Diego Carmona", url: "https://github.com/diegocarmn" }],
+  creator: "Diego Carmona",
   metadataBase: new URL("https://cineai.vercel.app"),
   openGraph: {
     type: "website",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "CineAI",
     images: [
       {
-        url: "./og-image.jpg",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "CineAI – Smart Movie Recommendations",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CineAI",
     description: "Smarter movie & series recommendations using AI.",
-    images: ["./og-image.jpg"],
+    images: ["/og-image.jpg"],
     creator: "@cineaiapp", // se tiver, senão pode remover
   },
   icons: {
