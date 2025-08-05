@@ -1,4 +1,3 @@
-
 import { auth } from "../../api/auth/[...nextauth]/auth";
 import { prisma } from "@/prisma/prisma";
 import MediaCard from "../../components/MediaCard";
@@ -41,7 +40,10 @@ export default async function MyListPage() {
               movie={{
                 id: movie.tmdbId,
                 title: movie.title,
-                release_date: movie.releaseDate.toISOString(),
+                release_date:
+                  typeof movie.releaseDate === "string"
+                    ? movie.releaseDate
+                    : movie.releaseDate?.toISOString(),
                 overview: movie.description,
                 poster_path: movie.posterPath,
                 backdrop_path: movie.backdropPath,
