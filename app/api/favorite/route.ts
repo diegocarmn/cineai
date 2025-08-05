@@ -31,7 +31,9 @@ export async function POST(req: NextRequest) {
 
   try {
     const existing = await prisma.movie.findUnique({
-      where: { tmdbId },
+      where: {
+        tmdbId: Number(tmdbId), // força tipo seguro
+      },
     });
 
     const movie = existing
