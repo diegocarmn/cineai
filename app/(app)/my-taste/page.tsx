@@ -29,6 +29,13 @@ export default async function MyListPage() {
         favorites list.`}
       </p>
       <pre className="text-white text-sm">
+        {JSON.stringify(
+          { id: session.user.id, email: session.user.email, favorites },
+          null,
+          2
+        )}
+      </pre>
+      <pre className="text-white text-sm">
         {JSON.stringify({ id: session.user.id, favorites }, null, 2)}
       </pre>
 
