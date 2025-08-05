@@ -41,7 +41,7 @@ export default function MyTasteClient({
       <div className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5 text-left">
         {favoriteMovies.length === 0 ? (
           <p className="pt-10 font-semibold md:text-lg text-center text-neutral-500">
-            Add movies to your list on the "Add Movies" page.
+            {`Add movies to your list on the "Add Movies" page.`}
           </p>
         ) : (
           favoriteMovies.map((fav) => {
