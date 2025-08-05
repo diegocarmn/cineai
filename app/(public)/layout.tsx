@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "CineAI",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "https://opengraph.b-cdn.net/production/images/67e66151-ac16-4449-8760-e992716cf70d.jpg?token=u9HAp13vsVhxG356iv5QrrctdMyz1JamLgfRHcbnguM&height=834&width=1200&expires=33290391110",
         width: 1200,
         height: 630,
         alt: "CineAI – Smart Movie Recommendations",
@@ -52,7 +52,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CineAI",
     description: "Smarter movie & series recommendations using AI.",
-    images: ["/og-image.jpg"],
+    images: [
+      "https://opengraph.b-cdn.net/production/images/67e66151-ac16-4449-8760-e992716cf70d.jpg?token=u9HAp13vsVhxG356iv5QrrctdMyz1JamLgfRHcbnguM&height=834&width=1200&expires=33290391110",
+    ],
     creator: "@cineaiapp", // se tiver, senão pode remover
   },
   icons: {
@@ -68,9 +70,7 @@ export default function PublicLayout({
   return (
     <SessionProvider>
       <html lang="en">
-        <body
-          className={`${geist.variable} ${inter.variable} antialiased`}
-        >
+        <body className={`${geist.variable} ${inter.variable} antialiased`}>
           {children}
         </body>
       </html>
