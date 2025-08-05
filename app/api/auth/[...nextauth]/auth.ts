@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import { prisma } from "@/prisma/prisma"; // ajusta se o path for diferente
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -13,17 +14,34 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
+    async jwt({ token, account, profile }) {
+      if (account && profile) {
+        const email = profile.email;
+
+        // Verifica se já existe user no banco
+        let user = await prisma.user.findUnique({ where: { email } });
+
+        // Se não existir, cria
+        if (!user) {
+          user = await prisma.user.create({
+            data: {
+              email,
+              name: profile.name ?? "",
+              image: profile.picture ?? "",
+            },
+          });
+        }
+
+        token.sub = user.id; // usa o ID real do Prisma no token
+      }
+
+      return token;
+    },
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;
       }
       return session;
-    },
-    async jwt({ token, account, profile }) {
-      if (account && profile) {
-        token.sub = account.providerAccountId;
-      }
-      return token;
     },
     async redirect({ baseUrl }) {
       return `${baseUrl}/home`;

@@ -1,3 +1,5 @@
+'use client';
+
 import Button from "./Button";
 import { IoMdAdd } from "react-icons/io";
 
@@ -38,9 +40,28 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : "/default-media.png";
 
-    function addToFavorites() {
-    // Logic to add the movie to favorites
-    console.log(`Adding ${movie.title} to favorites`);
+  async function addToFavorites() {
+    const res = await fetch("/api/favorite", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tmdbId: movie.id,
+        title: movie.title,
+        description: movie.overview,
+        releaseDate: movie.release_date,
+        posterPath: movie.poster_path,
+        backdropPath: movie.backdrop_path,
+        genreIds: movie.genre_ids,
+      }),
+    });
+
+    if (res.ok) {
+      console.log("Favorited!");
+    } else {
+      console.error("Failed to favorite.");
+    }
   }
 
   return (
@@ -52,8 +73,10 @@ const MediaCard = ({ movie }: { movie: Movie }) => {
         backgroundPosition: "center",
       }}
     >
-      <Button className="absolute top-2 right-2 drop-shadow-lg hover:shadow-xl/10 shadow-cinema"
-      onClick={addToFavorites}>
+      <Button
+        className="absolute top-2 right-2 drop-shadow-lg hover:shadow-xl/10 shadow-cinema"
+        onClick={addToFavorites}
+      >
         <IoMdAdd className="h-4 w-4 mr-1" />
         Add
       </Button>

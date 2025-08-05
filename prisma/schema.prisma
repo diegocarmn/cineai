@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
   engineType = "binary"
 }
 
@@ -29,7 +29,7 @@ model User {
 
 model Movie {
   id           String     @id @default(cuid())
-  tmdbId       Int
+  tmdbId       Int        @unique
   title        String
   description  String
   releaseDate  DateTime
