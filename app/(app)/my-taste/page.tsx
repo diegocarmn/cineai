@@ -30,28 +30,39 @@ export default async function MyListPage() {
       </p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5 text-left">
-        {favorites.map((fav) => {
-          const movie = fav.movie;
-          console.log("Session user id:", session.user.id);
-          console.log("Favorites:", favorites);
-          return (
-            <MediaCard
-              key={movie.id}
-              movie={{
-                id: movie.tmdbId,
-                title: movie.title,
-                release_date:
-                  typeof movie.releaseDate === "string"
-                    ? movie.releaseDate
-                    : movie.releaseDate?.toISOString(),
-                overview: movie.description,
-                poster_path: movie.posterPath,
-                backdrop_path: movie.backdropPath,
-                genre_ids: movie.genreIds,
-              }}
-            />
-          );
-        })}
+        {favorites.length === 0 ? (
+          <p className="text-white mt-10">Nenhum filme favoritado ainda.</p>
+        ) : (
+          favorites.map((fav) => {
+            const movie = fav.movie;
+
+            if (!movie) {
+              return (
+                <div className="text-red-500">
+                  Filme não encontrado no fav.movie
+                </div>
+              );
+            }
+
+            return (
+              <MediaCard
+                key={movie.tmdbId}
+                movie={{
+                  id: movie.tmdbId,
+                  title: movie.title,
+                  release_date:
+                    typeof movie.releaseDate === "string"
+                      ? movie.releaseDate
+                      : movie.releaseDate?.toISOString(),
+                  overview: movie.description,
+                  poster_path: movie.posterPath,
+                  backdrop_path: movie.backdropPath,
+                  genre_ids: movie.genreIds,
+                }}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );
