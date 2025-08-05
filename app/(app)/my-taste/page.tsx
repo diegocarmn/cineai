@@ -30,7 +30,7 @@ export default async function MyListPage() {
         favorites list.`}
       </p>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5">
+      <div className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5 text-left">
         {favorites.map((fav) => {
           const movie = fav.movie;
           console.log("Session user id:", session.user.id);

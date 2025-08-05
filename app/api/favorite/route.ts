@@ -1,7 +1,17 @@
-// app/api/favorite/route.ts
-import { auth } from "@/app/api/auth/[...nextauth]/auth"; 
-import { prisma } from "@/prisma/prisma"; 
+import { auth } from "@/app/api/auth/[...nextauth]/auth";
+import { prisma } from "@/prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
+
+// Define os tipos do corpo da requisição
+type MovieBody = {
+  tmdbId: number;
+  title: string;
+  description: string;
+  releaseDate: string;
+  posterPath: string | null;
+  backdropPath: string | null;
+  genreIds: number[];
+};
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -10,7 +20,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  const body = await req.json();
   const {
     tmdbId,
     title,
@@ -19,14 +28,14 @@ export async function POST(req: NextRequest) {
     posterPath,
     backdropPath,
     genreIds,
-  } = body;
+  }: MovieBody = await req.json();
 
   try {
     const movie = await prisma.movie.upsert({
-      where: { tmdbId },
+      where: { tmdbId: Number(tmdbId) }, // forçando tipo seguro
       update: {},
       create: {
-        tmdbId,
+        tmdbId: Number(tmdbId),
         title,
         description,
         releaseDate: new Date(releaseDate),
@@ -36,13 +45,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Adiciona como favorito
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
     });
 
-    if (!user)
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
     await prisma.favorite.create({
       data: {
