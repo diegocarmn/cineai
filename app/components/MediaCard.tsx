@@ -50,7 +50,8 @@ export default function MediaCard({
   isFavorite,
   onFavoriteChange,
   onRemove,
-}: Props) {
+  button = true,
+}: Props & { button?: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [pendingAction, setPendingAction] = useState<"add" | "remove" | null>(
     null
@@ -61,48 +62,48 @@ export default function MediaCard({
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : "/default-media.png";
 
-  async function toggleFavorite() {
-    const nextFav = !isFavorite;
-    setPendingAction(nextFav ? "add" : "remove");
-    setIsLoading(true);
+    async function toggleFavorite() {
+      const nextFav = !isFavorite;
+      setPendingAction(nextFav ? "add" : "remove");
+      setIsLoading(true);
 
-    try {
-      if (!nextFav) {
-        const res = await fetch("/api/favorite", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tmdbId: movie.id }),
-        });
-        if (!res.ok) throw new Error("DELETE failed");
-        onRemove?.();
-      } else {
-        const res = await fetch("/api/favorite", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            tmdbId: movie.id,
-            title: movie.title,
-            description: movie.overview,
-            releaseDate: movie.release_date,
-            posterPath: movie.poster_path,
-            backdropPath: movie.backdrop_path,
-            genreIds: movie.genre_ids,
-          }),
-        });
-        if (!res.ok) throw new Error("POST failed");
-      }
+      try {
+        if (!nextFav) {
+          const res = await fetch("/api/favorite", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tmdbId: movie.id }),
+          });
+          if (!res.ok) throw new Error("DELETE failed");
+          onRemove?.();
+        } else {
+          const res = await fetch("/api/favorite", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              tmdbId: movie.id,
+              title: movie.title,
+              description: movie.overview,
+              releaseDate: movie.release_date,
+              posterPath: movie.poster_path,
+              backdropPath: movie.backdrop_path,
+              genreIds: movie.genre_ids,
+            }),
+          });
+          if (!res.ok) throw new Error("POST failed");
+        }
 
-      onFavoriteChange(movie.id, nextFav);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-      setPendingAction(null);
-    }
-  }
+        onFavoriteChange(movie.id, nextFav);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+        setPendingAction(null);
+      }}
 
-  // Define secondary color based on loading state
-  const secondaryColor = isLoading ? isFavorite : isFavorite;
+    // Define secondary color based on loading state
+    const secondaryColor = isLoading ? isFavorite : isFavorite;
+
 
   return (
     <div className="relative mx-2 mb-4 h-96 w-60 overflow-hidden rounded-3xl flex items-end outline outline-white/20 transition-transform duration-100 ease-in-out hover:scale-110">
@@ -122,30 +123,31 @@ export default function MediaCard({
           <CgSpinner className="h-10 w-10 animate-spin text-cinema/90" />
         </div>
       )}
-
-      <Button
-        className="absolute top-2 right-2 drop-shadow-lg z-20"
-        onClick={toggleFavorite}
-        secondary={secondaryColor}
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <>
-            <CgSpinner className="h-4 w-4 animate-spin" />
-            <span className="ml-2">
-              {pendingAction === "add" ? "Adding..." : "Removing..."}
-            </span>
-          </>
-        ) : isFavorite ? (
-          <>
-            <IoIosRemoveCircle className="h-4 w-4 mr-1" /> Remove
-          </>
-        ) : (
-          <>
-            <IoMdAdd className="h-4 w-4 mr-1" /> Add
-          </>
-        )}
-      </Button>
+      {button && (
+        <Button
+          className="absolute top-2 right-2 drop-shadow-lg z-20"
+          onClick={button ? toggleFavorite : undefined}
+          secondary={secondaryColor}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <CgSpinner className="h-4 w-4 animate-spin" />
+              <span className="ml-2">
+                {pendingAction === "add" ? "Adding..." : "Removing..."}
+              </span>
+            </>
+          ) : isFavorite ? (
+            <>
+              <IoIosRemoveCircle className="h-4 w-4 mr-1" /> Remove
+            </>
+          ) : (
+            <>
+              <IoMdAdd className="h-4 w-4 mr-1" /> Add
+            </>
+          )}
+        </Button>
+      )}
 
       <div className="z-10 w-full h-1/4 bg-black/40 backdrop-blur-lg px-4 pt-2 pb-4 flex flex-col justify-between">
         <div>

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   const apiKey = process.env.TMDB_KEY;
@@ -23,7 +23,7 @@ export async function GET() {
 
     return NextResponse.json({ results: (data.results ?? []).slice(0, 12) });
   } catch (error) {
-    console.error("Erro ao buscar trending:", error);
+    console.error("Error fetching trending:", error);
     return NextResponse.json({ results: [] }, { status: 500 });
   }
 }

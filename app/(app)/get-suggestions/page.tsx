@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import TmdbSuggestions from "./TmdbSuggestions";
 
 export const metadata: Metadata = {
   title: "Get Suggestions",
@@ -19,6 +20,7 @@ export default function RecommendationsPage() {
       <p className="pt-2 text-body text-white/80 text-base text-center text-balance sm:text-lg md:text-xl md:max-w-3xl">
         {`Based on your favorite movies, we think you'll love these!`}
       </p>
+      <TmdbSuggestions />
     </div>
   );
 }
