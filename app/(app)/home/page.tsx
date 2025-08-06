@@ -20,7 +20,7 @@ export default async function HomePage() {
         Welcome to CineAI, <br />
         {session.user.name}
       </h1>
-      <p className="mt-2 text-body text-white/80 text-base text-center text-balance sm:text-lg md:text-xl md:max-w-3xl">
+      <p className="mt-4 text-body text-white/80 text-base text-center text-balance sm:text-lg md:text-xl md:max-w-3xl">
         Search for movies you love, add to your favorites, and get
         recommendations based on your taste!
       </p>

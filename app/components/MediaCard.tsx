@@ -16,10 +16,11 @@ type Movie = {
   genre_ids: number[];
 };
 
-type MediaCardProps = {
+type Props = {
   movie: Movie;
+  isFavorite: boolean;
+  onFavoriteChange: (id: number, nextFav: boolean) => void;
   onRemove?: () => void;
-  isInitiallyFavorite?: boolean;
 };
 
 const genreMap = new Map<number, string>([
@@ -46,68 +47,76 @@ const genreMap = new Map<number, string>([
 
 export default function MediaCard({
   movie,
+  isFavorite,
+  onFavoriteChange,
   onRemove,
-  isInitiallyFavorite = false,
-}: MediaCardProps) {
-  const [isFavorite, setIsFavorite] = useState(isInitiallyFavorite);
+}: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false); // <- controla o spinner
-
-  async function handleToggleFavorite() {
-    setIsLoading(true);
-
-    if (isFavorite) {
-      const res = await fetch("/api/favorite", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tmdbId: movie.id }),
-      });
-      if (res.ok) {
-        setIsFavorite(false);
-        onRemove?.();
-      } else console.error("Erro ao remover");
-    } else {
-      const res = await fetch("/api/favorite", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          tmdbId: movie.id,
-          title: movie.title,
-          description: movie.overview,
-          releaseDate: movie.release_date,
-          posterPath: movie.poster_path,
-          backdropPath: movie.backdrop_path,
-          genreIds: movie.genre_ids,
-        }),
-      });
-      if (res.ok) setIsFavorite(true);
-      else console.error("Erro ao favoritar");
-    }
-    setIsLoading(false);
-  }
+  const [pendingAction, setPendingAction] = useState<"add" | "remove" | null>(
+    null
+  );
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   const poster = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : "/default-media.png";
 
+  async function toggleFavorite() {
+    const nextFav = !isFavorite;
+    setPendingAction(nextFav ? "add" : "remove");
+    setIsLoading(true);
+
+    try {
+      if (!nextFav) {
+        const res = await fetch("/api/favorite", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tmdbId: movie.id }),
+        });
+        if (!res.ok) throw new Error("DELETE failed");
+        onRemove?.();
+      } else {
+        const res = await fetch("/api/favorite", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            tmdbId: movie.id,
+            title: movie.title,
+            description: movie.overview,
+            releaseDate: movie.release_date,
+            posterPath: movie.poster_path,
+            backdropPath: movie.backdrop_path,
+            genreIds: movie.genre_ids,
+          }),
+        });
+        if (!res.ok) throw new Error("POST failed");
+      }
+
+      onFavoriteChange(movie.id, nextFav);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+      setPendingAction(null);
+    }
+  }
+
+  // Define secondary color based on loading state
+  const secondaryColor = isLoading ? isFavorite : isFavorite;
+
   return (
-    <div
-      className="relative mx-2 mb-4 h-96 w-60 overflow-hidden rounded-3xl
-                 flex items-end outline outline-white/20
-                 transition-transform duration-100 ease-in-out hover:scale-110"
-    >
-      {/* POSTER */}
+    <div className="relative mx-2 mb-4 h-96 w-60 overflow-hidden rounded-3xl flex items-end outline outline-white/20 transition-transform duration-100 ease-in-out hover:scale-110">
       <Image
         src={poster}
         alt={movie.title}
         fill
-        className={`object-cover transition-opacity duration-300
-                    ${imgLoaded ? "opacity-100" : "opacity-0"}`}
+        className={`object-cover transition-opacity duration-300 ${
+          imgLoaded ? "opacity-100" : "opacity-0"
+        }`}
         onLoad={() => setImgLoaded(true)}
         priority
       />
 
-      {/* SPINNER */}
       {!imgLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30">
           <CgSpinner className="h-10 w-10 animate-spin text-cinema/90" />
@@ -116,18 +125,16 @@ export default function MediaCard({
 
       <Button
         className="absolute top-2 right-2 drop-shadow-lg z-20"
-        onClick={handleToggleFavorite}
-        secondary={isFavorite}
+        onClick={toggleFavorite}
+        secondary={secondaryColor}
         disabled={isLoading}
       >
         {isLoading ? (
           <>
             <CgSpinner className="h-4 w-4 animate-spin" />
-            {isFavorite ? (
-              <span className="ml-2">Removing...</span>
-            ) : (
-              <span className="ml-2">Adding...</span>
-            )}
+            <span className="ml-2">
+              {pendingAction === "add" ? "Adding..." : "Removing..."}
+            </span>
           </>
         ) : isFavorite ? (
           <>

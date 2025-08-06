@@ -21,3 +21,8 @@ body {
     font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   }
 }
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
