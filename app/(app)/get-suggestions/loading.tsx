@@ -1,13 +1,4 @@
 import { BeatLoading } from "respinner";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: {
-    default: "CineAI",
-    template: "",
-  },
-  icons: { icon: "/favicon.png" },
-};
 
 export default function Loading() {
   return (

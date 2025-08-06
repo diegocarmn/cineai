@@ -4,24 +4,6 @@ import { Geist, Inter } from "next/font/google";
 import "../globals.css";
 import { SessionProvider } from "next-auth/react";
 
-const geist = Geist({
-  variable: "--font-geist",
-  subsets: ["latin"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "CineAI - Home",
-  description: "Find and explore movies with CineAI",
-  icons: {
-    icon: "/favicon.png",
-  },
-};
-
 export default function HomeLayout({
   children,
 }: {
@@ -30,7 +12,7 @@ export default function HomeLayout({
   return (
     <SessionProvider>
       <html lang="en">
-        <body className={`${geist.variable} ${inter.variable} antialiased`}>
+        <body className="antialiased">
           <div className="relative flex min-h-screen flex-col bg-neutral-900 text-white">
             <Header />
 

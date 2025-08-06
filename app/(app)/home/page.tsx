@@ -3,7 +3,7 @@ import SearchForm from "./SearchForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "CineAI | Home",
+  title: "Home",
 };
 
 export default async function HomePage() {

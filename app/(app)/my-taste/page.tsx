@@ -4,7 +4,7 @@ import MyFavorites from "./MyFavorites";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "CineAI | Favorites",
+  title: "Favorites",
 };
 
 export default async function MyListPage() {

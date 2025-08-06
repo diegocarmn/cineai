@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     url: "https://cineai.vercel.app",
     title: "CineAI",
     description:
-      "Let CineAI recommend your next favorite movie or series based on your taste.",
+      "Let CineAI recommend your next favorite movie based on your taste.",
     siteName: "CineAI",
     images: [
       {
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     images: [
       "https://opengraph.b-cdn.net/production/images/67e66151-ac16-4449-8760-e992716cf70d.jpg?token=u9HAp13vsVhxG356iv5QrrctdMyz1JamLgfRHcbnguM&height=834&width=1200&expires=33290391110",
     ],
-    creator: "@cineaiapp", // se tiver, senão pode remover
+    creator: "Diego Carmona",
   },
   icons: {
     icon: "/favicon.png",

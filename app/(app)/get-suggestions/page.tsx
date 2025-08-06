@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "CineAI | Get Suggestions",
+  title: "Get Suggestions",
 };
 
 export default function RecommendationsPage() {
