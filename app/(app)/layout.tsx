@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
 import "../globals.css";
 import { SessionProvider } from "next-auth/react";
-import Noise from "../components/Noise";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -14,7 +13,6 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
-
 
 export const metadata: Metadata = {
   title: "CineAI - Home",
@@ -32,11 +30,8 @@ export default function HomeLayout({
   return (
     <SessionProvider>
       <html lang="en">
-        <body
-          className={`${geist.variable} ${inter.variable} antialiased`}
-        >
-          <div className="relative flex min-h-screen flex-col bg-neutral-900 md:bg-neutral-950 text-white">
-            <Noise />
+        <body className={`${geist.variable} ${inter.variable} antialiased`}>
+          <div className="relative flex min-h-screen flex-col bg-neutral-900 text-white">
             <Header />
 
             <main className="flex flex-1 flex-col px-4 pt-24">{children}</main>
