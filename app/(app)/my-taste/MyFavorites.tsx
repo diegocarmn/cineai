@@ -25,7 +25,7 @@ export default function MyTasteClient({
   const [favoriteMovies, setFavoriteMovies] = useState(favorites);
 
   return (
-    <div className="flex flex-col items-center text-center px-4">
+    <div className="flex flex-col items-center text-center px-4 md:pt-8">
       <h1
         className="text-3xl font-bold font-heading text-transparent text-center
           bg-gradient-to-r from-yellow-50 via-yellow-100 to-yellow-200 

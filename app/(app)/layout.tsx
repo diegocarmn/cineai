@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
 import "../globals.css";
 import { SessionProvider } from "next-auth/react";
+import Noise from "../components/Noise";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -34,7 +35,8 @@ export default function HomeLayout({
         <body
           className={`${geist.variable} ${inter.variable} antialiased`}
         >
-          <div className="flex min-h-screen flex-col bg-neutral-950 text-white">
+          <div className="relative flex min-h-screen flex-col bg-neutral-950 text-white">
+            <Noise />
             <Header />
 
             <main className="flex flex-1 flex-col px-4 pt-24">{children}</main>

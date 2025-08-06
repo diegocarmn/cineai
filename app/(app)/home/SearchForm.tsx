@@ -63,8 +63,8 @@ export default function SearchForm() {
             placeholder="e.g. Fantastic Four"
             className="
               px-4 py-2 sm:py-3 sm:px-5 w-full text-sm font-normal 
-              rounded-full bg-white/10 backdrop-blur-lg
-              border border-transparent 
+              rounded-full bg-black/30 backdrop-blur-lg
+              border border-white/10 
               focus:outline-none
               focus:border-cinema
             "
@@ -88,8 +88,8 @@ export default function SearchForm() {
         <div>
           {Array.isArray(movies) && movies.length > 0 && (
             <>
-              <h2 className="pt-10 font-semibold md:text-lg text-center">{`Search results for "${movieName}"`}</h2>
-              <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5">
+              <h2 className="pt-8 text-body text-white/80 text-base text-center text-balance sm:text-lg md:text-xl">{`Search results for "${movieName}"`}</h2>
+              <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-6 mb-5">
                 {movies.map((movie: Movie, index: number) => (
                   <li key={index} className="pb-2">
                     <MediaCard

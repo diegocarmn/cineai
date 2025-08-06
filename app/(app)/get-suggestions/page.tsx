@@ -1,7 +1,7 @@
 
 export default function RecommendationsPage() {
   return (
-    <div className="flex flex-col items-center justify-center text-center">
+    <div className="flex flex-col items-center justify-center text-center md:pt-8">
       <h1
         className="
           text-3xl font-bold font-heading text-transparent text-center
