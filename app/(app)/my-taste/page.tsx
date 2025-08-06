@@ -1,6 +1,11 @@
 import { auth } from "../../api/auth/[...nextauth]/auth";
 import { prisma } from "@/prisma/prisma";
 import MyFavorites from "./MyFavorites";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "CineAI | Favorites",
+};
 
 export default async function MyListPage() {
   const session = await auth();

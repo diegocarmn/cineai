@@ -1,5 +1,10 @@
 import { auth } from "@/app/api/auth/[...nextauth]/auth";
 import SearchForm from "./SearchForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "CineAI | Home",
+};
 
 export default async function HomePage() {
   const session = await auth();

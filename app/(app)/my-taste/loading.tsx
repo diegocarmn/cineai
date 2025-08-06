@@ -4,7 +4,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: {
     default: "CineAI",
-    template: "%s | CineAI", 
+    template: "", 
   },
   icons: { icon: "/favicon.png" },
 };
