@@ -2,7 +2,7 @@
 
 import Button from "./Button";
 import { IoMdAdd, IoIosRemoveCircle } from "react-icons/io";
-import { IoReload } from "react-icons/io5";
+import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
 
 type Movie = {
@@ -112,11 +112,11 @@ const MediaCard = ({
         className="absolute top-2 right-2 drop-shadow-lg"
         onClick={handleToggleFavorite}
         secondary={isFavorite}
-        disabled={isLoading} 
+        disabled={isLoading}
       >
         {isLoading ? (
           <>
-            <IoReload className="h-4 w-4 animate-spin" />
+            <CgSpinner className="h-4 w-4 animate-spin" />
             {isFavorite ? (
               <span className="ml-2">Removing...</span>
             ) : (

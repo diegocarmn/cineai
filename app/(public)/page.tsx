@@ -31,11 +31,11 @@ export default function LandingPage() {
         </h1>
         <p className="text-center mt-4 md:mt-8 text-sm font-body text-white/80 sm:text-base md:text-xl text-balance">
           Tired of scrolling forever? Let CineAI do the digging, so you can
-          enjoy the best shows and movies faster. Less browsing, more watching.
+          enjoy the best movies faster. Less browsing, more watching.
         </p>
         <Button
           onClick={() => signIn("google", { callbackUrl: "/home" })}
-          className="mt-6 md:mt-10 shadow-xl/20 shadow-cinema hover:scale-105 transition-transform duration-100"
+          className="mt-6 md:mt-10 shadow-xl/20 shadow-cinema hover:scale-105 transition-transform duration-100 ease-in-out md:px-6"
         >
           <span className="mr-2 md:text-lg">Get started</span>
           <GoArrowRight className="h-5 w-5" />

@@ -19,8 +19,8 @@ const Button = ({
       className={`
         ${
           secondary
-            ? "bg-red-800 text-white active:bg-red-600 hover:shadow-xl/10 shadow-red-500"
-            : "bg-cinema text-black active:bg-yellow-200 hover:shadow-xl/10 shadow-cinema"
+            ? "bg-red-800 text-white active:bg-red-600 hover:shadow-xl/10 shadow-red-500 hover:bg-red-700"
+            : "bg-cinema text-black active:bg-yellow-200 hover:shadow-xl/10 shadow-cinema hover:bg-yellow-200"
         }
         ${disabled ? "opacity-50 cursor-not-allowed" : ""}
         text-sm font-semibold font-body
