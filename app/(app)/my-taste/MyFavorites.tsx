@@ -36,7 +36,7 @@ export default function MyTasteClient({
       </h1>
 
       <p className="pt-2 text-body text-white/80 text-base text-center text-balance sm:text-lg md:text-xl md:max-w-3xl">
-        Manage all the movies you've added to your favorites list.
+       {`Manage all the movies you've added to your favorites list.`}
       </p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5 text-left">

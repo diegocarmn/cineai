@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   const apiKey = process.env.TMDB_KEY;
   if (!apiKey) {
     console.error("TMDB_KEY not set in environment variables");

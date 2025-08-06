@@ -120,7 +120,7 @@ export default function SearchForm() {
               >
                 {movieName
                   ? `Search results for "${movieName}"`
-                  : "Popular this week"}
+                  : `Popular this week`}
               </h2>
               <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-6 mb-5">
                 {movies.map((m) => (
@@ -140,7 +140,7 @@ export default function SearchForm() {
                 className="pt-10 md:pt-15 md:text-lg font-semibold text-center text-neutral-500 max-w-xs mx-auto truncate"
                 title={movieName}
               >
-                No results found for "{movieName}"
+                {`No results found for "${movieName}"`}
               </p>
             )
           )}
