@@ -2,11 +2,14 @@
 
 import { RiMovie2AiLine } from "react-icons/ri";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
+import { FaRegStar } from "react-icons/fa";
+import { IoIosStar } from "react-icons/io";
+import { IoSearch } from "react-icons/io5";
+import { TbSparkles } from "react-icons/tb";
 import HeaderButton from "./HeaderButton";
 import Link from "next/link";
 import { useState } from "react";
 import AuthButton from "./AuthButton";
-
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,9 +32,18 @@ const Header = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-3">
-          <HeaderButton href="/get-suggestions">Get Suggestions</HeaderButton>
-          <HeaderButton href="/my-taste">My Taste</HeaderButton>
-          <HeaderButton href="/home">Add Movies</HeaderButton>
+          <HeaderButton href="/get-suggestions">
+            <TbSparkles className="mr-2 h-5 w-5" />
+            Get Suggestions
+          </HeaderButton>
+          <HeaderButton href="/my-taste">
+            <FaRegStar className="mr-2 h-4 w-4" />
+            My Favorites
+          </HeaderButton>
+          <HeaderButton href="/home">
+            <IoSearch className="mr-2 h-4 w-4" />
+            Search
+          </HeaderButton>
           <AuthButton className="ml-2" />
         </div>
 
@@ -66,13 +78,24 @@ const Header = () => {
             onClick={() => setIsOpen(false)}
             className="py-4"
           >
+            <TbSparkles className="mr-2 h-5 w-5" />
             Get Suggestions
           </HeaderButton>
-          <HeaderButton href="/my-taste" onClick={() => setIsOpen(false)} className="py-4">
-            My Taste
+          <HeaderButton
+            href="/my-taste"
+            onClick={() => setIsOpen(false)}
+            className="py-4"
+          >
+            <IoIosStar className="mr-2 h-4 w-4" />
+            My Favorites
           </HeaderButton>
-          <HeaderButton href="/home" onClick={() => setIsOpen(false)} className="py-4">
-            Add Movies
+          <HeaderButton
+            href="/home"
+            onClick={() => setIsOpen(false)}
+            className="py-4"
+          >
+            <IoSearch className="mr-2 h-4 w-4" />
+            Search
           </HeaderButton>
           <AuthButton className="ml-2 py-4" />
         </div>
