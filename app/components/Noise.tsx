@@ -1,7 +1,7 @@
 // components/Noise.tsx
 export default function Noise() {
   return (
-    <div className="pointer-events-none absolute inset-0 h-full w-full">
+    <div className="hidden md:block pointer-events-none absolute inset-0 h-full w-full">
       <svg className="h-full w-full" preserveAspectRatio="none" aria-hidden>
         <filter id="noiseFilter">
           <feTurbulence
@@ -25,16 +25,14 @@ export default function Noise() {
           </feTurbulence>
         </filter>
 
-        {/*  ❯ 10 % de folga em volta  */}
         <rect
-          x="-10%" /* começa 10 % antes da tela */
+          x="-10%"
           y="-10%"
-          width="120%" /* cobre 120 % da largura/altura */
+          width="120%"
           height="120%"
           filter="url(#noiseFilter)"
           opacity="0.10"
         >
-          {/* drift diagonal suave em % (escala com o viewport) */}
           <animateTransform
             attributeName="transform"
             type="translate"

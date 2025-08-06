@@ -35,7 +35,7 @@ export default function HomeLayout({
         <body
           className={`${geist.variable} ${inter.variable} antialiased`}
         >
-          <div className="relative flex min-h-screen flex-col bg-neutral-950 text-white">
+          <div className="relative flex min-h-screen flex-col bg-neutral-900 md:bg-neutral-950 text-white">
             <Noise />
             <Header />
 
