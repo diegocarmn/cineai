@@ -14,10 +14,6 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "CineAI",
-    template: "%s | CineAI",
-  },
   description:
     "Discover what to watch next with AI-powered recommendations. Add your favorites and get smart suggestions based on your taste.",
   keywords: [
