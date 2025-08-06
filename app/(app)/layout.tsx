@@ -1,6 +1,6 @@
 import Header from "../components/AppHeader";
 import type { Metadata } from "next";
-import { Geist, Inter, Space_Grotesk } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
 import "../globals.css";
 import { SessionProvider } from "next-auth/react";
 
@@ -14,35 +14,30 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "CineAI - Home",
   description: "Find and explore movies with CineAI",
   icons: {
     icon: "/favicon.png",
-  }
+  },
 };
 
 export default function HomeLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <SessionProvider>
       <html lang="en">
         <body
-          className={`${geist.variable} ${inter.variable} ${spaceGrotesk.variable} antialiased`}
+          className={`${geist.variable} ${inter.variable} antialiased`}
         >
-          <div className="relative min-h-screen bg-neutral-950 text-white">
-            <div className="relative z-20">
-              <Header />
-              <main className="px-4 pt-30">{children}</main>
-            </div>
+          <div className="flex min-h-screen flex-col bg-neutral-950 text-white">
+            <Header />
+
+            <main className="flex flex-1 flex-col px-4 pt-24">{children}</main>
           </div>
         </body>
       </html>

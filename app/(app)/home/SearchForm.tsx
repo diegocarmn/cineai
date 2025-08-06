@@ -4,7 +4,7 @@ import { IoSearch } from "react-icons/io5";
 import Button from "../../components/Button";
 import { useState, useEffect } from "react";
 import MediaCard from "../../components/MediaCard";
-
+import { BeatLoading } from "respinner";
 
 export type Movie = {
   id: number;
@@ -20,6 +20,7 @@ export default function SearchForm() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [movieName, setMovieName] = useState<string>("");
   const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchFavorites() {
@@ -32,17 +33,17 @@ export default function SearchForm() {
   }, []);
 
   async function searchMovies(event: React.FormEvent<HTMLFormElement>) {
+    setIsLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const name = formData.get("search") as string;
     if (!name) return;
 
-    const res = await fetch(
-      `/api/search?query=${encodeURIComponent(name)}`
-    );
+    const res = await fetch(`/api/search?query=${encodeURIComponent(name)}`);
     const data = await res.json();
     setMovies(Array.isArray(data.results) ? data.results : []);
     setMovieName(name);
+    setIsLoading(false);
   }
 
   return (
@@ -78,31 +79,38 @@ export default function SearchForm() {
           </Button>
         </section>
       </form>
-      <div>
-        {Array.isArray(movies) && movies.length > 0 && (
-          <>
-            <h2 className="pt-10 font-semibold md:text-lg text-center">{`Search results for "${movieName}"`}</h2>
-            <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5">
-              {movies.map((movie: Movie, index: number) => (
-                <li key={index} className="pb-2">
-                  <MediaCard
-                    movie={movie}
-                    isInitiallyFavorite={favoriteIds.includes(movie.id)}
-                  />
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-        {Array.isArray(movies) && movies.length === 0 && movieName !== "" && (
-          <p
-            className="pt-10 md:pt-15 md:text-lg font-semibold text-center text-neutral-500 max-w-xs mx-auto truncate"
-            title={movieName}
-          >
-            {`No results found for "${movieName}"`}
-          </p>
-        )}
-      </div>
+
+      {isLoading ? (
+        <div className="pt-10 flex flex-col items-center justify-center">
+          <BeatLoading fill="#ffffff" count={3} size={15} />
+        </div>
+      ) : (
+        <div>
+          {Array.isArray(movies) && movies.length > 0 && (
+            <>
+              <h2 className="pt-10 font-semibold md:text-lg text-center">{`Search results for "${movieName}"`}</h2>
+              <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5">
+                {movies.map((movie: Movie, index: number) => (
+                  <li key={index} className="pb-2">
+                    <MediaCard
+                      movie={movie}
+                      isInitiallyFavorite={favoriteIds.includes(movie.id)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {Array.isArray(movies) && movies.length === 0 && movieName !== "" && (
+            <p
+              className="pt-10 md:pt-15 md:text-lg font-semibold text-center text-neutral-500 max-w-xs mx-auto truncate"
+              title={movieName}
+            >
+              {`No results found for "${movieName}"`}
+            </p>
+          )}
+        </div>
+      )}
     </>
   );
 }
