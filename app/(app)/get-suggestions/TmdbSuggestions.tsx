@@ -9,10 +9,19 @@ export default function SuggestionsClient() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
+  const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
 
   useEffect(() => {
     (async () => {
       try {
+        // Fetch user favorites first
+        const favRes = await fetch("/api/user-favorites", {
+          cache: "no-store",
+        });
+        const favData = await favRes.json();
+        setFavoriteIds(favData.favorites ?? []);
+
+        // Then fetch suggestions
         const res = await fetch("/api/suggestions", { cache: "no-store" });
 
         if (res.status === 401) {
@@ -34,6 +43,13 @@ export default function SuggestionsClient() {
       }
     })();
   }, []);
+
+  // Handle favorite change to update local state
+  const handleFavoriteChange = (id: number, isFav: boolean) => {
+    setFavoriteIds((prev) =>
+      isFav ? [...prev, id] : prev.filter((x) => x !== id)
+    );
+  };
 
   /* UI ----------------------------------------------------------------- */
   if (isLoading)
@@ -61,10 +77,8 @@ export default function SuggestionsClient() {
           <li key={m.id}>
             <MediaCard
               movie={m}
-              /* starts unchecked; user can favourite from here */
-              isFavorite={false}
-              onFavoriteChange={() => {}}
-              button={false}
+              isFavorite={favoriteIds.includes(m.id)}
+              onFavoriteChange={handleFavoriteChange}
             />
           </li>
         ))}
