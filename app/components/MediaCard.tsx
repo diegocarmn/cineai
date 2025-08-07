@@ -10,7 +10,6 @@ import { useState } from "react";
 import type { Movie } from "../types";
 import {
   genreMap,
-  formatRating,
   getRatingStars,
   getTrailerUrl,
 } from "../types";

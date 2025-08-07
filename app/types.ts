@@ -21,6 +21,18 @@ export type Movie = {
   trailer_site?: string; // Video site (YouTube, Vimeo, etc.)
 };
 
+// TMDB Video interface for trailers, teasers, clips, etc.
+export interface TMDBVideo {
+  id: string;
+  key: string;
+  name: string;
+  site: string; // "YouTube", "Vimeo", etc.
+  type: string; // "Trailer", "Teaser", "Clip", "Featurette", etc.
+  official: boolean;
+  published_at: string;
+  size: number; // Video resolution (480, 720, 1080)
+}
+
 // Generate YouTube trailer URL
 export function getTrailerUrl(movie: Movie): string | null {
   if (movie.trailer_key) {

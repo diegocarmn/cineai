@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { Movie } from "@/app/types";
+import type { Movie, TMDBVideo } from "@/app/types";
 
 // Fetch trailer for a specific movie
 async function fetchMovieTrailer(movieId: number, apiKey: string) {
@@ -14,13 +14,13 @@ async function fetchMovieTrailer(movieId: number, apiKey: string) {
     // Find official YouTube trailer with priority order
     const trailer =
       trailerData.results?.find(
-        (video: any) => video.site === "YouTube" && video.type === "Trailer"
+        (video: TMDBVideo) => video.site === "YouTube" && video.type === "Trailer"
       ) ||
       trailerData.results?.find(
-        (video: any) => video.site === "YouTube" && video.type === "Teaser"
+        (video: TMDBVideo) => video.site === "YouTube" && video.type === "Teaser"
       ) ||
       trailerData.results?.find(
-        (video: any) => video.site === "YouTube" && video.type === "Clip"
+        (video: TMDBVideo) => video.site === "YouTube" && video.type === "Clip"
       );
 
     return trailer
