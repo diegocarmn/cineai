@@ -13,6 +13,7 @@ export default async function MyListPage() {
   const favorites = await prisma.favorite.findMany({
     where: { userId: session.user.id },
     include: { movie: true },
+    orderBy: { createdAt: "desc" },
   });
 
   return <MyFavorites favorites={favorites} />;
