@@ -14,10 +14,12 @@ async function fetchMovieTrailer(movieId: number, apiKey: string) {
     // Find official YouTube trailer with priority order
     const trailer =
       trailerData.results?.find(
-        (video: TMDBVideo) => video.site === "YouTube" && video.type === "Trailer"
+        (video: TMDBVideo) =>
+          video.site === "YouTube" && video.type === "Trailer"
       ) ||
       trailerData.results?.find(
-        (video: TMDBVideo) => video.site === "YouTube" && video.type === "Teaser"
+        (video: TMDBVideo) =>
+          video.site === "YouTube" && video.type === "Teaser"
       ) ||
       trailerData.results?.find(
         (video: TMDBVideo) => video.site === "YouTube" && video.type === "Clip"

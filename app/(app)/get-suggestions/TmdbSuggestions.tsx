@@ -51,14 +51,14 @@ export default function SuggestionsClient() {
     );
 
   return (
-    <div className="mt-8">
-      <h2 className="mb-10 text-center font-heading text-xl md:text-2xl bg-gradient-to-r from-yellow-50 via-yellow-200 to-yellow-50 text-transparent bg-clip-text w-fit mx-auto bg-[length:200%_200%] animate-[gradient-x_6s_ease-in-out_infinite]">
+    <div className="mt-4 pt-5 md:pt-6 mb-5">
+      <h2 className="text-center font-heading text-xl md:text-2xl bg-gradient-to-r from-yellow-50 via-yellow-200 to-yellow-50 text-transparent bg-clip-text w-fit mx-auto bg-[length:200%_200%] animate-[gradient-x_6s_ease-in-out_infinite]">
         Recommended for you
       </h2>
 
-      <ul className="flex flex-wrap justify-center gap-4 mx-4 md:mx-20 text-left">
+      <ul className="mt-4 flex flex-wrap justify-center gap-4 md:gap-10 pt-5 md:pt-6 text-left">
         {movies.map((m) => (
-          <li key={m.id} className="pb-2">
+          <li key={m.id}>
             <MediaCard
               movie={m}
               /* starts unchecked; user can favourite from here */

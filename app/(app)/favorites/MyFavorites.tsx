@@ -32,20 +32,23 @@ export default function MyTasteClient({
         {`Manage all the movies you've added to your favorites list.`}
       </p>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5 text-left">
+      <div className="mt-4 pt-5 md:pt-6 mb-5">
         {movies.length === 0 ? (
           <p className="pt-10 font-semibold md:text-lg text-center text-neutral-500">
             Add movies to your list on the Search page.
           </p>
         ) : (
-          movies.map((movie) => (
-            <MediaCard
-              key={movie.id}
-              movie={movie}
-              isFavorite={true}
-              onFavoriteChange={handleFavoriteChange}
-            />
-          ))
+          <ul className="flex flex-wrap justify-center gap-4 md:gap-10 text-left">
+            {movies.map((movie) => (
+              <li key={movie.id}>
+                <MediaCard
+                  movie={movie}
+                  isFavorite={true}
+                  onFavoriteChange={handleFavoriteChange}
+                />
+              </li>
+            ))}
+          </ul>
         )}
       </div>
     </div>

@@ -113,9 +113,9 @@ export default function SearchForm() {
                   ? `Search results for "${movieName}"`
                   : `Popular this week`}
               </h2>
-              <ul className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-6 mb-5">
+              <ul className="mt-4 flex flex-wrap justify-center gap-4 md:gap-10 pt-5 md:pt-6 mb-5">
                 {movies.map((m) => (
-                  <li key={m.id} className="pb-2">
+                  <li key={m.id} className="">
                     <MediaCard
                       movie={m}
                       isFavorite={favoriteIds.includes(m.id)}
