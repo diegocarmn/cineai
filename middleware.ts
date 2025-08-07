@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const protectedRoutes = ["/home", "/my-taste", "/get-suggestions"];
+const protectedRoutes = ["/home", "/favorites", "/get-suggestions"];
 
 export async function middleware(request: NextRequest) {
   const session = await getToken({
@@ -27,6 +27,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/home/:path*", "/home", "/my-taste/:path*", "/my-taste", "/get-suggestions/:path*", "/get-suggestions", "/"],
+  matcher: ["/home/:path*", "/home", "/favorites/:path*", "/favorites", "/get-suggestions/:path*", "/get-suggestions", "/"],
 };
 
