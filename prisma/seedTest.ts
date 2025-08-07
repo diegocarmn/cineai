@@ -14,13 +14,13 @@ async function main() {
         create: {
           movie: {
             create: {
-              tmdbId: 550,
+              id: 550, // Agora usa 'id' ao invés de 'tmdbId'
               title: "Fight Club",
-              description: "A ticking-time-bomb insomniac...",
-              releaseDate: new Date("1999-10-15"),
-              posterPath: "/poster.jpg",
-              backdropPath: "/backdrop.jpg",
-              genreIds: [18, 53], // ← gêneros como números
+              overview: "A ticking-time-bomb insomniac...", // Agora usa 'overview'
+              release_date: "1999-10-15", // Agora usa string ao invés de Date
+              poster_path: "/poster.jpg", // Agora usa 'poster_path'
+              backdrop_path: "/backdrop.jpg", // Agora usa 'backdrop_path'
+              genre_ids: [18, 53], // Agora usa 'genre_ids'
             },
           },
         },

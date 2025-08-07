@@ -2,16 +2,7 @@
 
 import { useState } from "react";
 import MediaCard from "../../components/MediaCard";
-
-type Movie = {
-  tmdbId: number;
-  title: string;
-  releaseDate: string | Date;
-  description: string;
-  posterPath: string | null;
-  backdropPath: string | null;
-  genreIds: number[];
-};
+import type { Movie } from "../../types";
 
 type Favorite = { movie: Movie };
 
@@ -20,12 +11,14 @@ export default function MyTasteClient({
 }: {
   favorites: Favorite[];
 }) {
-  const [favoriteMovies, setFavoriteMovies] = useState(favorites);
+  // Agora os filmes já vêm no formato correto do banco!
+  const favoriteMovies = favorites.map(({ movie }) => movie);
+  const [movies, setMovies] = useState<Movie[]>(favoriteMovies);
 
   // Handle favorite change to update local state
   const handleFavoriteChange = (id: number, nextFav: boolean) => {
     if (!nextFav) {
-      setFavoriteMovies((prev) => prev.filter((f) => f.movie.tmdbId !== id));
+      setMovies((prev) => prev.filter((movie) => movie.id !== id));
     }
   };
 
@@ -36,34 +29,21 @@ export default function MyTasteClient({
       </h1>
 
       <p className="pt-2 text-body text-white/80 text-base text-center text-balance sm:text-lg md:text-xl md:max-w-3xl">
-       {`Manage all the movies you've added to your favorites list.`}
+        {`Manage all the movies you've added to your favorites list.`}
       </p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-4 mx-4 md:mx-20 pt-5 md:pt-10 mb-5 text-left">
-        {favoriteMovies.length === 0 ? (
+        {movies.length === 0 ? (
           <p className="pt-10 font-semibold md:text-lg text-center text-neutral-500">
             Add movies to your list on the Search page.
           </p>
         ) : (
-          favoriteMovies.map(({ movie }) => (
+          movies.map((movie) => (
             <MediaCard
-              key={movie.tmdbId}
-              movie={{
-                id: movie.tmdbId,
-                title: movie.title,
-                release_date:
-                  typeof movie.releaseDate === "string"
-                    ? movie.releaseDate
-                    : movie.releaseDate.toISOString(),
-                overview: movie.description,
-                poster_path: movie.posterPath,
-                backdrop_path: movie.backdropPath,
-                genre_ids: movie.genreIds,
-              }}
-              isFavorite={true} 
-              onFavoriteChange={
-                handleFavoriteChange
-              } 
+              key={movie.id}
+              movie={movie}
+              isFavorite={true}
+              onFavoriteChange={handleFavoriteChange}
             />
           ))
         )}

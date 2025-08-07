@@ -28,17 +28,32 @@ model User {
 }
 
 model Movie {
-  id           String     @id @default(cuid())
-  tmdbId       Int        @unique
-  title        String
-  description  String
-  releaseDate  DateTime
-  posterPath   String?
-  backdropPath String?
-  genreIds     Int[] // se for usar IDs
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  favoritedBy  Favorite[] // ← aqui a relação reversa
+  id            Int     @id // TMDB ID como chave primária
+  title         String
+  overview      String // TMDB usa 'overview' ao invés de 'description'
+  release_date  String // TMDB usa 'release_date' 
+  poster_path   String? // TMDB usa 'poster_path'
+  backdrop_path String? // TMDB usa 'backdrop_path'
+  genre_ids     Int[] // TMDB usa 'genre_ids'
+
+  // Novos campos TMDB
+  vote_average      Float? // Nota do filme (0-10)
+  vote_count        Int? // Número de votos
+  popularity        Float? // Popularidade
+  adult             Boolean? // Conteúdo adulto
+  original_language String? // Idioma original
+  original_title    String? // Título original
+  video             Boolean? // Se tem vídeo
+
+  // Campos para trailer (podem ser adicionados via API separada)
+  trailer_key  String? // YouTube video key
+  trailer_site String? // Site do vídeo (YouTube, Vimeo, etc.)
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  favoritedBy Favorite[]
+
+  @@map("movies") // mapeia para tabela 'movies'
 }
 
 model Favorite {
@@ -46,7 +61,7 @@ model Favorite {
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   movie     Movie    @relation(fields: [movieId], references: [id])
-  movieId   String
+  movieId   Int // Mudou de String para Int para corresponder ao Movie.id
   createdAt DateTime @default(now())
 
   @@unique([userId, movieId]) // impede favoritar duas vezes o mesmo filme

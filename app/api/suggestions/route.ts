@@ -8,6 +8,40 @@ import { prisma } from "@/prisma/prisma";
 /* Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
 
+// Fetch trailer for a specific movie
+async function fetchMovieTrailer(movieId: number, apiKey: string) {
+  try {
+    const trailerUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`;
+    const trailerRes = await fetch(trailerUrl);
+
+    if (!trailerRes.ok) return null;
+
+    const trailerData = await trailerRes.json();
+
+    // Find official YouTube trailer with priority order
+    const trailer =
+      trailerData.results?.find(
+        (video: any) => video.site === "YouTube" && video.type === "Trailer"
+      ) ||
+      trailerData.results?.find(
+        (video: any) => video.site === "YouTube" && video.type === "Teaser"
+      ) ||
+      trailerData.results?.find(
+        (video: any) => video.site === "YouTube" && video.type === "Clip"
+      );
+
+    return trailer
+      ? {
+          trailer_key: trailer.key,
+          trailer_site: trailer.site,
+        }
+      : null;
+  } catch (error) {
+    console.error(`Error fetching trailer for movie ${movieId}:`, error);
+    return null;
+  }
+}
+
 /** Fetches TMDb recommendations for a single movie */
 async function fetchMovieRecommendations(tmdbId: number) {
   const apiKey = process.env.TMDB_KEY;
@@ -19,7 +53,20 @@ async function fetchMovieRecommendations(tmdbId: number) {
   if (!res.ok) throw new Error("TMDb recommendations request failed");
 
   const data = await res.json();
-  return data.results as Movie[];
+  const movies = data.results as Movie[];
+
+  // Fetch trailers for each recommended movie
+  const moviesWithTrailers = await Promise.all(
+    movies.map(async (movie: Movie) => {
+      const trailerInfo = await fetchMovieTrailer(movie.id, apiKey);
+      return {
+        ...movie,
+        ...trailerInfo,
+      };
+    })
+  );
+
+  return moviesWithTrailers;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -47,10 +94,11 @@ export async function GET() {
 
     /* 3. Fetch recommendations for each favorite -------------------------- */
     const favoriteTmdbIds = new Set(
-      user.favorites.map((fav) => fav.movie.tmdbId)
+      user.favorites.map((fav) => fav.movie.id) // Agora usa 'id' ao invés de 'tmdbId'
     );
-    const promises = user.favorites.map((fav) =>
-      fetchMovieRecommendations(fav.movie.tmdbId).then((arr) => arr.slice(0, 5))
+    const promises = user.favorites.map(
+      (fav) =>
+        fetchMovieRecommendations(fav.movie.id).then((arr) => arr.slice(0, 5)) // Agora usa 'id'
     );
 
     const settled = await Promise.allSettled(promises);

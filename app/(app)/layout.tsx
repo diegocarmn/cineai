@@ -9,7 +9,7 @@ export default function HomeLayout({
 }) {
   return (
     <SessionProvider>
-      <html lang="en">
+      <html lang="en" className="scroll-smooth">
         <body className="antialiased">
           <div className="relative flex min-h-screen flex-col bg-neutral-900 text-white">
             <Header />

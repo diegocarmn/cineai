@@ -2,19 +2,18 @@
 
 import Image from "next/image";
 import Button from "./Button";
+import TrailerButton from "./TrailerButton";
 import { IoMdAdd, IoIosRemoveCircle } from "react-icons/io";
+import { FaPlay } from "react-icons/fa";
 import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
-
-type Movie = {
-  id: number;
-  title: string;
-  release_date: string;
-  overview: string;
-  poster_path: string | null;
-  backdrop_path: string | null;
-  genre_ids: number[];
-};
+import type { Movie } from "../types";
+import {
+  genreMap,
+  formatRating,
+  getRatingStars,
+  getTrailerUrl,
+} from "../types";
 
 type Props = {
   movie: Movie;
@@ -22,28 +21,6 @@ type Props = {
   onFavoriteChange: (id: number, nextFav: boolean) => void;
   onRemove?: () => void;
 };
-
-const genreMap = new Map<number, string>([
-  [28, "Action"],
-  [12, "Adventure"],
-  [16, "Animation"],
-  [35, "Comedy"],
-  [80, "Crime"],
-  [99, "Documentary"],
-  [18, "Drama"],
-  [10751, "Family"],
-  [14, "Fantasy"],
-  [36, "History"],
-  [27, "Horror"],
-  [10402, "Music"],
-  [9648, "Mystery"],
-  [10749, "Romance"],
-  [878, "Sci-Fi"],
-  [10770, "TV Movie"],
-  [53, "Thriller"],
-  [10752, "War"],
-  [37, "Western"],
-]);
 
 export default function MediaCard({
   movie,
@@ -62,51 +39,45 @@ export default function MediaCard({
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : "/default-media.png";
 
-    async function toggleFavorite() {
-      const nextFav = !isFavorite;
-      setPendingAction(nextFav ? "add" : "remove");
-      setIsLoading(true);
+  async function toggleFavorite() {
+    const nextFav = !isFavorite;
+    setPendingAction(nextFav ? "add" : "remove");
+    setIsLoading(true);
 
-      try {
-        if (!nextFav) {
-          const res = await fetch("/api/favorite", {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ tmdbId: movie.id }),
-          });
-          if (!res.ok) throw new Error("DELETE failed");
-          onRemove?.();
-        } else {
-          const res = await fetch("/api/favorite", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              tmdbId: movie.id,
-              title: movie.title,
-              description: movie.overview,
-              releaseDate: movie.release_date,
-              posterPath: movie.poster_path,
-              backdropPath: movie.backdrop_path,
-              genreIds: movie.genre_ids,
-            }),
-          });
-          if (!res.ok) throw new Error("POST failed");
-        }
+    try {
+      if (!nextFav) {
+        const res = await fetch("/api/favorite", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tmdbId: movie.id }),
+        });
+        if (!res.ok) throw new Error("DELETE failed");
+        onRemove?.();
+      } else {
+        const res = await fetch("/api/favorite", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(movie),
+        });
+        if (!res.ok) throw new Error("POST failed");
+      }
 
-        onFavoriteChange(movie.id, nextFav);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-        setPendingAction(null);
-      }}
+      onFavoriteChange(movie.id, nextFav);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+      setPendingAction(null);
+    }
+  }
 
-    // Define secondary color based on loading state
-    const secondaryColor = isLoading ? isFavorite : isFavorite;
+  const trailerUrl = getTrailerUrl(movie);
 
+  // Define secondary color based on loading state
+  const secondaryColor = isLoading ? isFavorite : isFavorite;
 
   return (
-    <div className="relative mx-2 mb-4 h-96 w-60 overflow-hidden rounded-3xl flex items-end outline outline-white/20 transition-transform duration-100 ease-in-out hover:scale-110">
+    <div className="relative mx-2 mb-4 h-96 w-60 overflow-hidden rounded-3xl flex items-end outline outline-white/20 ring-inset ring-2 ring-white/20 hover:scale-110 transition-transform duration-150 ease-in-out">
       <Image
         src={poster}
         alt={movie.title}
@@ -124,33 +95,38 @@ export default function MediaCard({
           <CgSpinner className="h-10 w-10 animate-spin text-cinema/90" />
         </div>
       )}
-      {button && (
-        <Button
-          className="absolute top-2 right-2 drop-shadow-lg z-20"
-          onClick={button ? toggleFavorite : undefined}
-          secondary={secondaryColor}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
-              <CgSpinner className="h-4 w-4 animate-spin" />
-              <span className="ml-2">
-                {pendingAction === "add" ? "Adding..." : "Removing..."}
-              </span>
-            </>
-          ) : isFavorite ? (
-            <>
-              <IoIosRemoveCircle className="h-4 w-4 mr-1" /> Remove
-            </>
-          ) : (
-            <>
-              <IoMdAdd className="h-4 w-4 mr-1" /> Add
-            </>
-          )}
-        </Button>
-      )}
 
-      <div className="z-10 w-full h-1/4 bg-black/40 backdrop-blur-lg px-4 pt-2 pb-4 flex flex-col justify-between">
+      {/* Action buttons */}
+      <div className="absolute top-2 right-2 flex gap-2 z-20">
+        {/* Favorite button */}
+        {button && (
+          <Button
+            className="drop-shadow-lg"
+            onClick={button ? toggleFavorite : undefined}
+            secondary={secondaryColor}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <CgSpinner className="h-4 w-4 animate-spin" />
+                <span className="ml-2">
+                  {pendingAction === "add" ? "Adding..." : "Removing..."}
+                </span>
+              </>
+            ) : isFavorite ? (
+              <>
+                <IoIosRemoveCircle className="h-4 w-4 mr-1" /> Remove
+              </>
+            ) : (
+              <>
+                <IoMdAdd className="h-4 w-4 mr-1" /> Add
+              </>
+            )}
+          </Button>
+        )}
+      </div>
+
+      <div className="z-10 w-full h-30 bg-black/40 backdrop-blur-lg px-4 pt-2 pb-3 flex flex-col justify-between">
         <div>
           <h3
             title={movie.title}
@@ -158,9 +134,16 @@ export default function MediaCard({
           >
             {movie.title}
           </h3>
-          <p className="mb-2 text-sm font-body text-neutral-300 drop-shadow">
+          <p className="text-sm font-body text-neutral-300 drop-shadow">
             {movie.release_date ? movie.release_date.slice(0, 4) : "N/A"}
           </p>
+          {movie.vote_average && movie.vote_average > 0 && (
+            <div className="flex items-center gap-1 mb-1">
+              <span className="text-cinema text-xl leading-none">
+                {getRatingStars(movie.vote_average)}
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="flex">
@@ -174,6 +157,17 @@ export default function MediaCard({
           ))}
         </div>
       </div>
+      {/* Trailer button */}
+      {movie.trailer_key && (
+        <div className="absolute bottom-3 right-3 z-20">
+          <TrailerButton
+            trailerUrl={trailerUrl}
+            className="drop-shadow-lg hover:text-white"
+          >
+            <FaPlay className="h-3 w-3 text-black" />
+          </TrailerButton>
+        </div>
+      )}
     </div>
   );
 }
