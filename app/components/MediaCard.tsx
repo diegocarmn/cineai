@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { FaStar, FaRegStar, FaYoutube } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
 import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
 import type { Movie } from "../types";
 import { genreMap, getRatingStars, getTrailerUrl } from "../types";
+import FavoriteButton from "./FavoriteButton";
 
 type Props = {
   movie: Movie;
@@ -22,10 +23,6 @@ export default function MediaCard({
   onRemove,
   button = true,
 }: Props) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [pendingAction, setPendingAction] = useState<"add" | "remove" | null>(
-    null
-  );
   const [imgLoaded, setImgLoaded] = useState(false);
 
   const poster = movie.poster_path
@@ -33,43 +30,6 @@ export default function MediaCard({
     : "/default-media.png";
 
   const trailerUrl = getTrailerUrl(movie);
-
-  async function toggleFavorite() {
-    const nextFav = !isFavorite;
-    setPendingAction(nextFav ? "add" : "remove");
-    setIsLoading(true);
-
-    try {
-      const res = await fetch("/api/favorite", {
-        method: nextFav ? "POST" : "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nextFav ? movie : { tmdbId: movie.id }),
-      });
-
-      if (!res.ok) throw new Error(`${nextFav ? "POST" : "DELETE"} failed`);
-
-      if (!nextFav) onRemove?.();
-      onFavoriteChange(movie.id, nextFav);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-      setPendingAction(null);
-    }
-  }
-
-  const favoriteButtonClass = `
-    drop-shadow-lg transition-all duration-300 ease-out rounded-full p-2 hover:scale-110
-    ${
-      isLoading
-        ? pendingAction === "add"
-          ? "bg-green-500 text-white opacity-75 cursor-not-allowed"
-          : "bg-red-500 text-white opacity-75 cursor-not-allowed"
-        : isFavorite
-        ? "bg-yellow-400 hover:bg-yellow-400 text-black cursor-pointer active:scale-95"
-        : "bg-neutral-800 hover:bg-gray-500 text-white cursor-pointer active:scale-95"
-    }
-  `;
 
   return (
     <div className="flex rounded-2xl md:rounded-2xl bg-black/20 backdrop-blur-lg border border-white/10 hover:border-white/20 transition-all duration-200 min-w-85 md:max-w-130 h-60 md:h-72 overflow-hidden hover:scale-110">
@@ -96,19 +56,13 @@ export default function MediaCard({
         {/* Favorite button - Mobile only */}
         {button && (
           <div className="absolute top-2 left-2 z-20 md:hidden">
-            <button
-              className={favoriteButtonClass}
-              onClick={toggleFavorite}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <CgSpinner className="h-4 w-4 animate-spin" />
-              ) : isFavorite ? (
-                <FaStar className="h-4 w-4" />
-              ) : (
-                <FaRegStar className="h-4 w-4" />
-              )}
-            </button>
+            <FavoriteButton
+              movie={movie}
+              isFavorite={isFavorite}
+              onFavoriteChange={onFavoriteChange}
+              onRemove={onRemove}
+              size="sm"
+            />
           </div>
         )}
       </div>
@@ -132,19 +86,13 @@ export default function MediaCard({
             {/* Favorite button - Desktop only */}
             {button && (
               <div className="hidden md:block flex-shrink-0">
-                <button
-                  className={favoriteButtonClass}
-                  onClick={toggleFavorite}
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <CgSpinner className="h-5 w-5 animate-spin" />
-                  ) : isFavorite ? (
-                    <FaStar className="h-5 w-5" />
-                  ) : (
-                    <FaRegStar className="h-5 w-5" />
-                  )}
-                </button>
+                <FavoriteButton
+                  movie={movie}
+                  isFavorite={isFavorite}
+                  onFavoriteChange={onFavoriteChange}
+                  onRemove={onRemove}
+                  size="md"
+                />
               </div>
             )}
           </div>

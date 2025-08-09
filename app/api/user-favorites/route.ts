@@ -18,7 +18,7 @@ export async function GET() {
     },
   });
 
-  const favoriteIds = user?.favorites.map((fav) => fav.movie.id) || []; // Agora usa 'id' ao invés de 'tmdbId'
+  const favoriteIds = user?.favorites.map((fav) => fav.movie.id) || [];
 
   return NextResponse.json({ favorites: favoriteIds });
 }

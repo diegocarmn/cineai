@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   });
 
   const movie = await prisma.movie.findUnique({
-    where: { id: tmdbId }, // Agora usa 'id' ao invés de 'tmdbId'
+    where: { id: tmdbId },
   });
 
   if (!user || !movie) {

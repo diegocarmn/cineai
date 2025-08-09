@@ -5,7 +5,7 @@ import MediaCard from "@/app/components/MediaCard";
 import { BeatLoading } from "respinner";
 import type { Movie } from "@/app/types";
 
-export default function SuggestionsClient() {
+export default function GroqSuggestionsClient() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
@@ -21,23 +21,23 @@ export default function SuggestionsClient() {
         const favData = await favRes.json();
         setFavoriteIds(favData.favorites ?? []);
 
-        // Then fetch suggestions
-        const res = await fetch("/api/suggestions", { cache: "no-store" });
+        // Then fetch AI suggestions
+        const res = await fetch("/api/ai", { cache: "no-store" });
 
         if (res.status === 401) {
-          setMessage("You must be signed in to see suggestions.");
+          setMessage("You must be signed in to see AI recommendations.");
           return;
         }
 
         const data = await res.json();
         if (data.results.length === 0) {
-          setMessage("No favourites found to generate suggestions.");
+          setMessage("No favourites found to generate AI recommendations.");
         } else {
           setMovies(data.results);
         }
       } catch (err) {
-        console.error("Suggestions fetch failed:", err);
-        setMessage("Something went wrong while fetching suggestions.");
+        console.error("AI suggestions fetch failed:", err);
+        setMessage("Something went wrong while fetching AI recommendations.");
       } finally {
         setIsLoading(false);
       }
@@ -68,8 +68,8 @@ export default function SuggestionsClient() {
 
   return (
     <div className="mt-4 pt-5 md:pt-6 mb-5">
-      <h2 className="text-center font-heading text-xl md:text-2xl bg-gradient-to-r from-yellow-50 via-yellow-200 to-yellow-50 text-transparent bg-clip-text w-fit mx-auto bg-[length:200%_200%] animate-[gradient-x_6s_ease-in-out_infinite]">
-        Recommended for you
+      <h2 className="text-center font-heading text-xl md:text-2xl bg-gradient-to-r from-green-50 via-green-200 to-green-50 text-transparent bg-clip-text w-fit mx-auto bg-[length:200%_200%] animate-[gradient-x_6s_ease-in-out_infinite]">
+        AI Recommendations
       </h2>
 
       <ul className="mt-4 flex flex-wrap justify-center gap-4 md:gap-10 pt-5 md:pt-6 text-left">

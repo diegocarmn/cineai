@@ -11,7 +11,6 @@ export default function MyTasteClient({
 }: {
   favorites: Favorite[];
 }) {
-  // Agora os filmes já vêm no formato correto do banco!
   const favoriteMovies = favorites.map(({ movie }) => movie);
   const [movies, setMovies] = useState<Movie[]>(favoriteMovies);
 

@@ -13,9 +13,7 @@ export async function POST(req: NextRequest) {
 
     const movie: Movie = await req.json();
 
-    // Use uma transação para garantir consistência
     const result = await prisma.$transaction(async (tx) => {
-      // Buscar usuário e filme em paralelo
       const [user, existingMovie] = await Promise.all([
         tx.user.findUnique({
           where: { email: session.user.email! },
@@ -31,7 +29,6 @@ export async function POST(req: NextRequest) {
         throw new Error("User not found");
       }
 
-      // Verificar se já está nos favoritos (só se o filme existir)
       if (existingMovie) {
         const existingFavorite = await tx.favorite.findUnique({
           where: {
@@ -106,7 +103,6 @@ export async function DELETE(req: NextRequest) {
 
     const { tmdbId } = await req.json();
 
-    // Buscar usuário e filme em paralelo, e deletar favorito em uma operação
     const result = await prisma.$transaction(async (tx) => {
       const [user, movie] = await Promise.all([
         tx.user.findUnique({
@@ -114,7 +110,7 @@ export async function DELETE(req: NextRequest) {
           select: { id: true },
         }),
         tx.movie.findUnique({
-          where: { id: Number(tmdbId) }, // Agora usa 'id' ao invés de 'tmdbId'
+          where: { id: Number(tmdbId) },
           select: { id: true },
         }),
       ]);

@@ -96,7 +96,7 @@ export async function GET() {
 
     /* 3. Fetch recommendations for each favorite -------------------------- */
     const favoriteTmdbIds = new Set(
-      user.favorites.map((fav) => fav.movie.id) // Agora usa 'id' ao invés de 'tmdbId'
+      user.favorites.map((fav) => fav.movie.id)
     );
     const promises = user.favorites.map(
       (fav) =>
