@@ -29,11 +29,16 @@ function safeParse<T>(txt: string): T | null {
  * 3. Sends only title and year (essential data)
  */
 function selectOptimalFavorites(
-  favorites: Array<{ title: string; year: number | null; genre_ids: number[]; createdAt?: Date }>, 
+  favorites: Array<{
+    title: string;
+    year: number | null;
+    genre_ids: number[];
+    createdAt?: Date;
+  }>,
   maxCount: number = 30
 ) {
   if (favorites.length <= maxCount) {
-    return favorites.map(fav => ({ title: fav.title, year: fav.year }));
+    return favorites.map((fav) => ({ title: fav.title, year: fav.year }));
   }
 
   const recentCount = 6;
@@ -47,13 +52,16 @@ function selectOptimalFavorites(
     .slice(0, recentCount);
 
   const remainingFavorites = favorites.filter(
-    fav => !recentFavorites.some(recent => recent.title === fav.title)
+    (fav) => !recentFavorites.some((recent) => recent.title === fav.title)
   );
 
-  const diversityFavorites = selectForDiversity(remainingFavorites, diversityCount);
+  const diversityFavorites = selectForDiversity(
+    remainingFavorites,
+    diversityCount
+  );
 
   const selected = [...recentFavorites, ...diversityFavorites];
-  return selected.map(fav => ({ title: fav.title, year: fav.year }));
+  return selected.map((fav) => ({ title: fav.title, year: fav.year }));
 }
 
 /**
@@ -66,14 +74,14 @@ function selectForDiversity(
   if (favorites.length <= count) return favorites;
 
   const decadeGroups = new Map<string, typeof favorites>();
-  favorites.forEach(fav => {
-    const decade = fav.year ? `${Math.floor(fav.year / 10) * 10}s` : 'unknown';
+  favorites.forEach((fav) => {
+    const decade = fav.year ? `${Math.floor(fav.year / 10) * 10}s` : "unknown";
     if (!decadeGroups.has(decade)) decadeGroups.set(decade, []);
     decadeGroups.get(decade)!.push(fav);
   });
 
   const genreGroups = new Map<number, typeof favorites>();
-  favorites.forEach(fav => {
+  favorites.forEach((fav) => {
     const primaryGenre = fav.genre_ids[0] || 0;
     if (!genreGroups.has(primaryGenre)) genreGroups.set(primaryGenre, []);
     genreGroups.get(primaryGenre)!.push(fav);
@@ -93,10 +101,13 @@ function selectForDiversity(
     if (useDecade && decades.length > 0) {
       const currentDecade = decades[decadeIndex % decades.length];
       const decadeMovies = decadeGroups.get(currentDecade)!;
-      
-      const available = decadeMovies.filter(movie => !usedTitles.has(movie.title));
+
+      const available = decadeMovies.filter(
+        (movie) => !usedTitles.has(movie.title)
+      );
       if (available.length > 0) {
-        const randomMovie = available[Math.floor(Math.random() * available.length)];
+        const randomMovie =
+          available[Math.floor(Math.random() * available.length)];
         selected.push(randomMovie);
         usedTitles.add(randomMovie.title);
       }
@@ -104,10 +115,13 @@ function selectForDiversity(
     } else if (genres.length > 0) {
       const currentGenre = genres[genreIndex % genres.length];
       const genreMovies = genreGroups.get(currentGenre)!;
-      
-      const available = genreMovies.filter(movie => !usedTitles.has(movie.title));
+
+      const available = genreMovies.filter(
+        (movie) => !usedTitles.has(movie.title)
+      );
       if (available.length > 0) {
-        const randomMovie = available[Math.floor(Math.random() * available.length)];
+        const randomMovie =
+          available[Math.floor(Math.random() * available.length)];
         selected.push(randomMovie);
         usedTitles.add(randomMovie.title);
       }
@@ -118,7 +132,7 @@ function selectForDiversity(
   }
 
   if (selected.length < count) {
-    const remaining = favorites.filter(fav => !usedTitles.has(fav.title));
+    const remaining = favorites.filter((fav) => !usedTitles.has(fav.title));
     const shuffled = remaining.sort(() => Math.random() - 0.5);
     const needed = count - selected.length;
     selected.push(...shuffled.slice(0, needed));
@@ -168,8 +182,14 @@ export async function GET() {
 
     const selectedFavorites = selectOptimalFavorites(allFavorites, 30);
 
-    console.log(`🎬 AI Suggestions: ${selectedFavorites.length}/${allFavorites.length} favorites selected`);
-    console.log(`📊 Strategy: ${allFavorites.length > 30 ? '6 recent + diversity' : 'All favorites'}`);
+    console.log(
+      `🎬 AI Suggestions: ${selectedFavorites.length}/${allFavorites.length} favorites selected`
+    );
+    console.log(
+      `📊 Strategy: ${
+        allFavorites.length > 30 ? "6 recent + diversity" : "All favorites"
+      }`
+    );
 
     const groqItems = await getGroqMovieListSimple({
       favorites: selectedFavorites,

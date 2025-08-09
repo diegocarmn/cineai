@@ -39,8 +39,11 @@ export async function getUserFavoritesWithGenres() {
       movie: {
         ...fav.movie,
         genreCount: fav.movie.genre_ids?.length || 0,
-        hasRareGenres: fav.movie.genre_ids?.some(id => [99, 36, 37, 10402, 10770].includes(id)) || false,
-      }
-    }))
+        hasRareGenres:
+          fav.movie.genre_ids?.some((id) =>
+            [99, 36, 37, 10402, 10770].includes(id)
+          ) || false,
+      },
+    })),
   };
 }

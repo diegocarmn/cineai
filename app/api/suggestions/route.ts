@@ -95,9 +95,7 @@ export async function GET() {
       return NextResponse.json({ results: [] });
 
     /* 3. Fetch recommendations for each favorite -------------------------- */
-    const favoriteTmdbIds = new Set(
-      user.favorites.map((fav) => fav.movie.id)
-    );
+    const favoriteTmdbIds = new Set(user.favorites.map((fav) => fav.movie.id));
     const promises = user.favorites.map(
       (fav) =>
         fetchMovieRecommendations(fav.movie.id).then((arr) => arr.slice(0, 5)) // Agora usa 'id'
