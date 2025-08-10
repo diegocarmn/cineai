@@ -193,7 +193,7 @@ export async function GET() {
 
     const groqItems = await getGroqMovieListSimple({
       favorites: selectedFavorites,
-      top_n: 12,
+      top_n: 18,
     });
 
     const movies = await tmdbSearchFromGroqList(groqItems);

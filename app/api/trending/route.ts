@@ -57,7 +57,7 @@ export async function GET() {
     }
 
     const data = await res.json();
-    const movies = (data.results ?? []).slice(0, 12);
+    const movies = (data.results ?? []).slice(0, 18);
 
     // Fetch trailers for each movie in parallel
     const moviesWithTrailers = await Promise.all(

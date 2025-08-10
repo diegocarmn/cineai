@@ -37,7 +37,7 @@ export default function MyTasteClient({
             Add movies to your list on the Search page.
           </p>
         ) : (
-          <ul className="flex flex-wrap justify-center gap-4 md:gap-10 text-left">
+          <ul className="mt-4 flex flex-wrap justify-center gap-4 md:gap-8 pt-5 md:pt-6 md:px-10 lg:px-30 mb-5">
             {movies.map((movie) => (
               <li key={movie.id}>
                 <MediaCard

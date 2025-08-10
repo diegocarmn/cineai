@@ -12,6 +12,9 @@ type Props = {
   onRemove?: () => void;
   className?: string;
   size?: "sm" | "md" | "lg";
+  isLoading?: boolean;
+  pendingAction?: "add" | "remove" | null;
+  onToggle?: (e: React.MouseEvent) => Promise<void>;
 };
 
 export default function FavoriteButton({
@@ -21,13 +24,30 @@ export default function FavoriteButton({
   onRemove,
   className = "",
   size = "md",
+  isLoading: externalLoading,
+  pendingAction: externalPendingAction,
+  onToggle,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [pendingAction, setPendingAction] = useState<"add" | "remove" | null>(
     null
   );
 
-  async function toggleFavorite() {
+  // Use external loading state if provided, otherwise use internal state
+  const currentLoading =
+    externalLoading !== undefined ? externalLoading : isLoading;
+  const currentPendingAction =
+    externalPendingAction !== undefined ? externalPendingAction : pendingAction;
+
+  async function toggleFavorite(e: React.MouseEvent) {
+    e.stopPropagation(); // Evita que o clique se propague para o card pai
+
+    // If external toggle function is provided, use it instead
+    if (onToggle) {
+      await onToggle(e);
+      return;
+    }
+
     const nextFav = !isFavorite;
     setPendingAction(nextFav ? "add" : "remove");
     setIsLoading(true);
@@ -60,8 +80,8 @@ export default function FavoriteButton({
   const buttonClass = `
     drop-shadow-lg transition-all duration-300 ease-out rounded-full hover:scale-110
     ${
-      isLoading
-        ? pendingAction === "add"
+      currentLoading
+        ? currentPendingAction === "add"
           ? "bg-green-500 text-white opacity-75 cursor-not-allowed"
           : "bg-red-500 text-white opacity-75 cursor-not-allowed"
         : isFavorite
@@ -82,10 +102,10 @@ export default function FavoriteButton({
     <button
       className={buttonClass}
       onClick={toggleFavorite}
-      disabled={isLoading}
+      disabled={currentLoading}
       title={isFavorite ? "Remove from favorites" : "Add to favorites"}
     >
-      {isLoading ? (
+      {currentLoading ? (
         <CgSpinner className={`${iconSize[size]} animate-spin`} />
       ) : isFavorite ? (
         <FaStar className={iconSize[size]} />
