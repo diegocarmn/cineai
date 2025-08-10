@@ -117,13 +117,15 @@ export default function MediaCard({
           </div>
 
           {/* Description */}
-          <div>
+          <div className="flex-1">
             <h4 className="text-xs md:text-sm font-semibold font-body text-white mb-0.5 md:mb-1">
               Description
             </h4>
-            <p className="font-body text-xs md:text-xs md:pr-2 text-neutral-300 line-clamp-3  leading-relaxed overflow-hidden">
-              {movie.overview || "No description available."}
-            </p>
+            <div className="h-16 md:h-20 overflow-y-auto custom-scrollbar scrollbar-thin scrollbar-thumb-white/5 scrollbar-track-transparent hover:scrollbar-thumb-white/15 scrollbar-thumb-rounded-full">
+              <p className="font-body text-xs md:text-xs md:pr-2 text-neutral-300 leading-relaxed">
+                {movie.overview || "No description available."}
+              </p>
+            </div>
           </div>
         </div>
 
