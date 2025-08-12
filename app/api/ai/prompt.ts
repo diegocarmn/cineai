@@ -32,10 +32,17 @@ export type SimpleInput = { favorites: Fav[]; top_n?: number; mood?: string };
 
 export function buildUserMessageSimple(input: SimpleInput) {
   const { favorites, top_n = 10, mood } = input;
-  const message: any = {
-    favorites: favorites.map((f) => ({ title: f.title, year: f.year ?? null })),
-    top_n,
-  };
+    const message: {
+      favorites: { title: string; year: number | null }[];
+      top_n: number;
+      mood?: string;
+    } = {
+      favorites: favorites.map((f) => ({
+        title: f.title,
+        year: f.year ?? null,
+      })),
+      top_n,
+    };
 
   if (mood) {
     message.mood = mood;

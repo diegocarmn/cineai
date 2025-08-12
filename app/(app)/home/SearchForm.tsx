@@ -6,7 +6,6 @@ import Button from "../../components/Button";
 import MediaCard from "../../components/MediaCard";
 import { BeatLoading } from "respinner";
 import type { Movie } from "../../../app/types";
-import CompactMediaCard from "@/app/components/CompactMediaCard";
 
 export default function SearchForm() {
   const [movies, setMovies] = useState<Movie[]>([]);
