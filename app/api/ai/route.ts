@@ -148,8 +148,8 @@ async function getGroqMovieListSimple(input: SimpleInput): Promise<GroqItem[]> {
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: buildUserMessageSimple(input) },
     ],
-    temperature: 0.2,
-    max_tokens: 400,
+    temperature: 0.1,
+    max_tokens: 1024,
   });
 
   const raw = resp.choices[0]?.message?.content ?? "[]";
@@ -157,8 +157,10 @@ async function getGroqMovieListSimple(input: SimpleInput): Promise<GroqItem[]> {
   return data.filter((it) => it?.tmdb_query && it.tmdb_query.trim().length > 0);
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const mood = searchParams.get("mood") || undefined;
     const user = await getUserFavorites();
 
     if (!user?.favorites.length) {
@@ -183,22 +185,27 @@ export async function GET() {
     const selectedFavorites = selectOptimalFavorites(allFavorites, 30);
 
     console.log(
-      `🎬 AI Suggestions: ${selectedFavorites.length}/${allFavorites.length} favorites selected`
+      `AI Suggestions: ${selectedFavorites.length}/${allFavorites.length} favorites selected`
     );
     console.log(
-      `📊 Strategy: ${
+      `Strategy: ${
         allFavorites.length > 30 ? "6 recent + diversity" : "All favorites"
       }`
     );
 
     const groqItems = await getGroqMovieListSimple({
       favorites: selectedFavorites,
-      top_n: 18,
+      top_n: 32,
+      mood,
     });
 
     const movies = await tmdbSearchFromGroqList(groqItems);
 
-    return NextResponse.json({ results: movies });
+    // Remove filmes que já estão nos favoritos do usuário
+    const favoriteIds = new Set(user.favorites.map((fav) => fav.movie.id));
+    const filteredMovies = movies.filter((movie) => !favoriteIds.has(movie.id));
+
+    return NextResponse.json({ results: filteredMovies });
   } catch (err) {
     console.error("AI suggestions error:", err);
     return NextResponse.json(

@@ -23,15 +23,15 @@ body {
     width: 4px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+    background: #171717;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: #ffd900;
     border-radius: 9999px;
     transition: background-color 0.2s ease;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: #ffd900;
   }
   .custom-scrollbar::-webkit-scrollbar-button {
     display: none;
