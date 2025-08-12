@@ -44,12 +44,12 @@ export default function ExpandedMediaCard({
       onClick={onClick}
     >
       <div
-        className="flex flex-col text-left rounded-2xl bg-neutral-950 backdrop-blur-lg border border-white/10 hover:border-white/20 transition-all duration-300 w-80 md:w-120 max-h-[90vh] overflow-hidden shadow-2xl shadow-black"
+        className="flex flex-col md:flex-row text-left rounded-2xl bg-neutral-950 backdrop-blur-lg border border-white/10 hover:border-white/20 transition-all duration-300 w-80 md:w-[800px] max-h-[90vh] overflow-hidden shadow-2xl shadow-black"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
-          className="absolute bottom-2 right-2 z-20 text-white p-2 rounded-full cursor-pointer hover:scale-110 hover:text-cinema ease-in-out transition duration-200 "
+          className="absolute top-2 right-2 z-20 text-white p-2 rounded-full cursor-pointer hover:scale-110 hover:text-cinema ease-in-out transition duration-200"
           title="Close"
           onClick={onClick}
         >
@@ -57,7 +57,7 @@ export default function ExpandedMediaCard({
         </button>
 
         {/* Poster Section */}
-        <div className="relative h-48 md:h-120 w-full overflow-hidden rounded-t-2xl flex-shrink-0">
+        <div className="relative h-48 md:h-auto md:w-80 md:aspect-[2/3] w-full overflow-hidden md:rounded-l-2xl rounded-t-2xl md:rounded-tr-none flex-shrink-0">
           <Image
             src={poster}
             alt={movie.title}
@@ -66,7 +66,7 @@ export default function ExpandedMediaCard({
               imgLoaded ? "opacity-100" : "opacity-0"
             }`}
             onLoad={() => setImgLoaded(true)}
-            sizes="(max-width: 768px) 320px, 384px"
+            sizes="(max-width: 768px) 320px, 320px"
             priority
           />
 
@@ -90,7 +90,6 @@ export default function ExpandedMediaCard({
             />
           </div>
         </div>
-
         {/* Content Section */}
         <div className="flex flex-col flex-1 p-4 overflow-y-auto custom-scrollbar">
           <div className="flex flex-col gap-2">
@@ -133,7 +132,7 @@ export default function ExpandedMediaCard({
               <h4 className="text-sm font-semibold font-body text-white mb-2">
                 Description
               </h4>
-              <div className="h-24 overflow-y-auto custom-scrollbar">
+              <div className="h-24 md:h-60 overflow-y-auto custom-scrollbar">
                 <p className="font-body text-sm text-neutral-300 leading-relaxed pr-2">
                   {movie.overview || "No description available."}
                 </p>
@@ -144,7 +143,7 @@ export default function ExpandedMediaCard({
           {/* Trailer Button */}
           {movie.trailer_key && (
             <button
-              className="flex items-center gap-2 text-neutral-400 hover:text-red-500 transition-colors duration-200 pt-2 mt-4 self-start cursor-pointer"
+              className="flex items-center gap-2 text-neutral-400 hover:text-red-500 transition-colors duration-200 pt-2 mt-auto self-start cursor-pointer"
               onClick={() => trailerUrl && window.open(trailerUrl, "_blank")}
             >
               <FaYoutube className="h-5 w-5" />
