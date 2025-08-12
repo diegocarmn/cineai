@@ -11,6 +11,9 @@ type Props = {
   onFavoriteChange: (id: number, nextFav: boolean) => void;
   onRemove?: () => void;
   defaultExpanded?: boolean;
+  isInWatchlist?: boolean;
+  onWatchlistChange?: (id: number, nextState: boolean) => void;
+  onWatchlistRemove?: () => void;
 };
 
 export default function MediaCard({
@@ -19,12 +22,19 @@ export default function MediaCard({
   onFavoriteChange,
   onRemove,
   defaultExpanded = false,
+  isInWatchlist = false,
+  onWatchlistChange,
+  onWatchlistRemove,
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
-  const [pendingAction, setPendingAction] = useState<"add" | "remove" | null>(
-    null
-  );
+  const [isWatchlistLoading, setIsWatchlistLoading] = useState(false);
+  const [favoritePendingAction, setFavoritePendingAction] = useState<
+    "add" | "remove" | null
+  >(null);
+  const [watchlistPendingAction, setWatchlistPendingAction] = useState<
+    "add" | "remove" | null
+  >(null);
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
@@ -34,7 +44,7 @@ export default function MediaCard({
     e.stopPropagation();
 
     const nextFav = !isFavorite;
-    setPendingAction(nextFav ? "add" : "remove");
+    setFavoritePendingAction(nextFav ? "add" : "remove");
     setIsFavoriteLoading(true);
 
     try {
@@ -52,7 +62,33 @@ export default function MediaCard({
       console.error(err);
     } finally {
       setIsFavoriteLoading(false);
-      setPendingAction(null);
+      setFavoritePendingAction(null);
+    }
+  };
+
+  const handleWatchlistToggle = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    const nextState = !isInWatchlist;
+    setWatchlistPendingAction(nextState ? "add" : "remove");
+    setIsWatchlistLoading(true);
+
+    try {
+      const res = await fetch("/api/watchlist", {
+        method: nextState ? "POST" : "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nextState ? movie : { tmdbId: movie.id }),
+      });
+
+      if (!res.ok) throw new Error(`${nextState ? "POST" : "DELETE"} failed`);
+
+      if (!nextState) onWatchlistRemove?.();
+      onWatchlistChange?.(movie.id, nextState);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsWatchlistLoading(false);
+      setWatchlistPendingAction(null);
     }
   };
 
@@ -65,8 +101,14 @@ export default function MediaCard({
         onRemove={onRemove}
         onClick={toggleExpanded}
         favoriteLoading={isFavoriteLoading}
-        pendingAction={pendingAction}
+        pendingAction={favoritePendingAction}
         onFavoriteToggle={handleFavoriteToggle}
+        isInWatchlist={isInWatchlist}
+        onWatchlistChange={onWatchlistChange}
+        onWatchlistRemove={onWatchlistRemove}
+        watchlistLoading={isWatchlistLoading}
+        watchlistPendingAction={watchlistPendingAction}
+        onWatchlistToggle={handleWatchlistToggle}
       />
 
       {isExpanded && (
@@ -77,8 +119,14 @@ export default function MediaCard({
           onRemove={onRemove}
           onClick={toggleExpanded}
           favoriteLoading={isFavoriteLoading}
-          pendingAction={pendingAction}
+          pendingAction={favoritePendingAction}
           onFavoriteToggle={handleFavoriteToggle}
+          isInWatchlist={isInWatchlist}
+          onWatchlistChange={onWatchlistChange}
+          onWatchlistRemove={onWatchlistRemove}
+          watchlistLoading={isWatchlistLoading}
+          watchlistPendingAction={watchlistPendingAction}
+          onWatchlistToggle={handleWatchlistToggle}
         />
       )}
     </div>

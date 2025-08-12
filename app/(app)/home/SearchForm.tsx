@@ -11,16 +11,27 @@ export default function SearchForm() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [movieName, setMovieName] = useState("");
   const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
+  const [watchlistIds, setWatchlistIds] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("/api/user-favorites", { cache: "no-store" });
-        const data = await res.json();
-        setFavoriteIds(data.favorites ?? []);
+        // Load favorites
+        const favRes = await fetch("/api/user-favorites", {
+          cache: "no-store",
+        });
+        const favData = await favRes.json();
+        setFavoriteIds(favData.favorites ?? []);
+
+        // Load watchlist
+        const watchRes = await fetch("/api/user-watchlist", {
+          cache: "no-store",
+        });
+        const watchData = await watchRes.json();
+        setWatchlistIds(watchData.watchlist ?? []);
       } catch (err) {
-        console.error("Erro ao buscar favoritos:", err);
+        console.error("Erro ao buscar dados do usuário:", err);
       }
     })();
   }, []);
@@ -63,6 +74,13 @@ export default function SearchForm() {
   const handleFavoriteChange = (id: number, isFav: boolean) => {
     setFavoriteIds((prev) =>
       isFav ? [...prev, id] : prev.filter((x) => x !== id)
+    );
+  };
+
+  // Handle watchlist change to update local state
+  const handleWatchlistChange = (id: number, inWatchlist: boolean) => {
+    setWatchlistIds((prev) =>
+      inWatchlist ? [...prev, id] : prev.filter((x) => x !== id)
     );
   };
 
@@ -119,7 +137,9 @@ export default function SearchForm() {
                     <MediaCard
                       movie={m}
                       isFavorite={favoriteIds.includes(m.id)}
+                      isInWatchlist={watchlistIds.includes(m.id)}
                       onFavoriteChange={handleFavoriteChange}
+                      onWatchlistChange={handleWatchlistChange}
                     />
                   </li>
                 ))}

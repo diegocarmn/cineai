@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Movie } from "../types";
 import { getRatingStars, genreMap } from "../types";
 import FavoriteButton from "./FavoriteButton";
+import BookmarkButton from "./BookmarkButton";
 import { IoIosArrowUp } from "react-icons/io";
 
 type Props = {
@@ -13,6 +14,12 @@ type Props = {
   favoriteLoading?: boolean;
   pendingAction?: "add" | "remove" | null;
   onFavoriteToggle?: (e: React.MouseEvent) => Promise<void>;
+  isInWatchlist?: boolean;
+  onWatchlistChange?: (id: number, nextState: boolean) => void;
+  onWatchlistRemove?: () => void;
+  watchlistLoading?: boolean;
+  watchlistPendingAction?: "add" | "remove" | null;
+  onWatchlistToggle?: (e: React.MouseEvent) => Promise<void>;
 };
 
 function CompactMediaCard({
@@ -24,6 +31,12 @@ function CompactMediaCard({
   favoriteLoading = false,
   pendingAction = null,
   onFavoriteToggle,
+  isInWatchlist = false,
+  onWatchlistChange,
+  onWatchlistRemove,
+  watchlistLoading = false,
+  watchlistPendingAction = null,
+  onWatchlistToggle,
 }: Props) {
   const poster = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
@@ -41,8 +54,8 @@ function CompactMediaCard({
         sizes="(max-width: 768px) 96px, 160px"
       />
 
-      {/* Favorite button */}
-      <div className="text-right p-2">
+      {/* Favorite and Bookmark buttons */}
+      <div className="absolute top-2 right-2 flex flex-col gap-2 z-10">
         <FavoriteButton
           movie={movie}
           isFavorite={isFavorite}
@@ -53,11 +66,21 @@ function CompactMediaCard({
           pendingAction={pendingAction}
           onToggle={onFavoriteToggle}
         />
+        <BookmarkButton
+          movie={movie}
+          isInWatchlist={isInWatchlist}
+          onWatchlistChange={onWatchlistChange || (() => {})}
+          onRemove={onWatchlistRemove}
+          size="md"
+          isLoading={watchlistLoading}
+          pendingAction={watchlistPendingAction}
+          onToggle={onWatchlistToggle}
+        />
       </div>
 
       {/* Expand button */}
       <button
-        className="absolute bottom-2 right-2 z-20 text-white p-2 rounded-full cursor-pointer hover:scale-110 hover:text-cinema ease-in-out transition duration-200"
+        className="absolute bottom-2 right-2 z-30 text-white p-2 rounded-full cursor-pointer hover:scale-110 hover:text-cinema ease-in-out transition duration-200"
         title="View more"
         onClick={onClick}
       >

@@ -1,14 +1,14 @@
 "use client";
 
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { TbBookmark, TbBookmarkFilled } from "react-icons/tb";
 import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
 import type { Movie } from "../types";
 
 type Props = {
   movie: Movie;
-  isFavorite: boolean;
-  onFavoriteChange: (id: number, nextFav: boolean) => void;
+  isInWatchlist: boolean;
+  onWatchlistChange: (id: number, nextState: boolean) => void;
   onRemove?: () => void;
   className?: string;
   size?: "sm" | "md" | "lg";
@@ -17,10 +17,10 @@ type Props = {
   onToggle?: (e: React.MouseEvent) => Promise<void>;
 };
 
-export default function FavoriteButton({
+export default function BookmarkButton({
   movie,
-  isFavorite,
-  onFavoriteChange,
+  isInWatchlist,
+  onWatchlistChange,
   onRemove,
   className = "",
   size = "md",
@@ -39,8 +39,8 @@ export default function FavoriteButton({
   const currentPendingAction =
     externalPendingAction !== undefined ? externalPendingAction : pendingAction;
 
-  async function toggleFavorite(e: React.MouseEvent) {
-    e.stopPropagation();
+  async function toggleWatchlist(e: React.MouseEvent) {
+    e.stopPropagation(); // Prevent card expansion
 
     // If external toggle function is provided, use it instead
     if (onToggle) {
@@ -48,21 +48,21 @@ export default function FavoriteButton({
       return;
     }
 
-    const nextFav = !isFavorite;
-    setPendingAction(nextFav ? "add" : "remove");
+    const nextState = !isInWatchlist;
+    setPendingAction(nextState ? "add" : "remove");
     setIsLoading(true);
 
     try {
-      const res = await fetch("/api/favorite", {
-        method: nextFav ? "POST" : "DELETE",
+      const res = await fetch("/api/watchlist", {
+        method: nextState ? "POST" : "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nextFav ? movie : { tmdbId: movie.id }),
+        body: JSON.stringify(nextState ? movie : { tmdbId: movie.id }),
       });
 
-      if (!res.ok) throw new Error(`${nextFav ? "POST" : "DELETE"} failed`);
+      if (!res.ok) throw new Error(`${nextState ? "POST" : "DELETE"} failed`);
 
-      if (!nextFav) onRemove?.();
-      onFavoriteChange(movie.id, nextFav);
+      if (!nextState) onRemove?.();
+      onWatchlistChange(movie.id, nextState);
     } catch (err) {
       console.error(err);
     } finally {
@@ -84,8 +84,8 @@ export default function FavoriteButton({
         ? currentPendingAction === "add"
           ? "bg-green-500 text-white opacity-75 cursor-not-allowed"
           : "bg-red-500 text-white opacity-75 cursor-not-allowed"
-        : isFavorite
-        ? "bg-cinema text-black cursor-pointer active:scale-95"
+        : isInWatchlist
+        ? "bg-white hover:bg-cinema text-black cursor-pointer active:scale-95"
         : "bg-neutral-800 hover:bg-neutral-600 text-white cursor-pointer active:scale-95"
     }
     ${sizeClasses[size]}
@@ -101,16 +101,16 @@ export default function FavoriteButton({
   return (
     <button
       className={buttonClass}
-      onClick={toggleFavorite}
+      onClick={toggleWatchlist}
       disabled={currentLoading}
-      title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+      title={isInWatchlist ? "Remove from watchlist" : "Add to watchlist"}
     >
       {currentLoading ? (
         <CgSpinner className={`${iconSize[size]} animate-spin`} />
-      ) : isFavorite ? (
-        <FaStar className={iconSize[size]} />
+      ) : isInWatchlist ? (
+        <TbBookmarkFilled className={iconSize[size]} />
       ) : (
-        <FaRegStar className={iconSize[size]} />
+        <TbBookmark className={iconSize[size]} />
       )}
     </button>
   );

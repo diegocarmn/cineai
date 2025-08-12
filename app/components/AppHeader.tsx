@@ -2,10 +2,9 @@
 
 import { RiMovie2AiLine } from "react-icons/ri";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-import { FaRegStar } from "react-icons/fa";
-import { IoIosStar } from "react-icons/io";
-import { TbSparkles } from "react-icons/tb";
-import { IoMdHome } from "react-icons/io";
+import { FaRegStar, FaRegBookmark } from "react-icons/fa";
+import { IoIosStar, IoMdHome } from "react-icons/io";
+import { TbSparkles, TbBookmark } from "react-icons/tb";
 import HeaderButton from "./HeaderButton";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,7 +15,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 mx-4">
-      <div className="mx-auto max-w-5xl backdrop-blur-lg bg-black/30 rounded-full px-2 py-2 flex items-center border border-white/10 justify-between">
+      <div className="mx-auto max-w-5xl backdrop-blur-lg bg-stone-950/50 rounded-full px-2 py-2 flex items-center border border-white/10 justify-between">
         <Link href="/home">
           <span className="flex items-center py-1 md:py-0 mx-2">
             <RiMovie2AiLine className="w-6 h-6 text-cinema mr-1" />
@@ -38,7 +37,11 @@ const Header = () => {
           </HeaderButton>
           <HeaderButton href="/favorites">
             <FaRegStar className="mr-2 h-4 w-4" />
-            My Favorites
+            Favorites
+          </HeaderButton>
+          <HeaderButton href="/watchlist">
+            <TbBookmark className="mr-2 h-4 w-4" />
+            Watchlist
           </HeaderButton>
           <HeaderButton href="/get-suggestions">
             <TbSparkles className="mr-2 h-5 w-5" />
@@ -90,8 +93,17 @@ const Header = () => {
             className="py-4"
           >
             <IoIosStar className="mr-2 h-4 w-4" />
-            My Favorites
+            Favorites
           </HeaderButton>
+          <HeaderButton
+            href="/watchlist"
+            onClick={() => setIsOpen(false)}
+            className="py-4"
+          >
+            <TbBookmark className="mr-2 h-[0.875rem] aspect-square" />
+            Watchlist
+          </HeaderButton>
+
           <HeaderButton
             href="/get-suggestions"
             onClick={() => setIsOpen(false)}

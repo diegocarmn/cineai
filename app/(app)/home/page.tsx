@@ -26,7 +26,6 @@ export default async function HomePage() {
         recommendations based on your taste!
       </p>
       <SearchForm />
-      <div></div>
     </div>
   );
 }

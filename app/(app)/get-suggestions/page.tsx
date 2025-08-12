@@ -15,10 +15,10 @@ export default async function RecommendationsPage() {
           bg-clip-text sm:text-5xl md:text-7xl
         "
       >
-        Get suggestions <br /> on what to watch
+        AI Recommendations
       </h1>
       <p className="pt-2 text-body text-white/80 text-base text-center text-balance sm:text-lg md:text-xl md:max-w-3xl">
-        {`Try our AI-powered recommendations, based on your favorite movies!`}
+        {`Try our AI-powered recommendations, based on your favorite movies and whatever mood you're in!`}
       </p>
 
       {/* AI Recommendations */}

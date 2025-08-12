@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import MediaCard from "@/app/components/MediaCard";
 import { BeatLoading } from "respinner";
 import type { Movie } from "@/app/types";
-import { IoMdArrowDropdown } from "react-icons/io";
-
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function GroqSuggestionsClient() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
   const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
+  const [watchlistIds, setWatchlistIds] = useState<number[]>([]);
   const [selectedMood, setSelectedMood] = useState<string>("");
 
   const moods = [
@@ -30,6 +30,7 @@ export default function GroqSuggestionsClient() {
     { value: "relaxed", label: "Relaxed" },
     { value: "cozy", label: "Cozy" },
     { value: "peaceful", label: "Peaceful" },
+    { value: "big-plot-twist", label: "Plot twist" },
     { value: "nostalgic", label: "Nostalgic" },
     { value: "bittersweet", label: "Bittersweet" },
     { value: "thoughtful", label: "Thoughtful" },
@@ -48,12 +49,19 @@ export default function GroqSuggestionsClient() {
   useEffect(() => {
     (async () => {
       try {
-        // Fetch user favorites first
+        // Fetch user favorites
         const favRes = await fetch("/api/user-favorites", {
           cache: "no-store",
         });
         const favData = await favRes.json();
         setFavoriteIds(favData.favorites ?? []);
+
+        // Fetch user watchlist
+        const watchRes = await fetch("/api/user-watchlist", {
+          cache: "no-store",
+        });
+        const watchData = await watchRes.json();
+        setWatchlistIds(watchData.watchlist ?? []);
 
         // Then fetch AI suggestions with mood
         const url = selectedMood
@@ -96,6 +104,13 @@ export default function GroqSuggestionsClient() {
     );
   };
 
+  // Handle watchlist change to update local state
+  const handleWatchlistChange = (id: number, inWatchlist: boolean) => {
+    setWatchlistIds((prev) =>
+      inWatchlist ? [...prev, id] : prev.filter((x) => x !== id)
+    );
+  };
+
   /* UI ----------------------------------------------------------------- */
   if (isLoading)
     return (
@@ -113,16 +128,16 @@ export default function GroqSuggestionsClient() {
 
   return (
     <div className="mt-4 pt-5 md:pt-6 mb-5">
-      <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
+      <div className="flex items-center justify-center gap-4 mb-4">
         <h2 className="text-center font-heading text-xl md:text-2xl bg-gradient-to-r from-green-50 via-green-200 to-green-50 text-transparent bg-clip-text bg-[length:200%_200%] animate-[gradient-x_6s_ease-in-out_infinite]">
-          AI Recommendations for Your Mood
+          Your Mood
         </h2>
 
         <div className="relative">
           <select
             value={selectedMood}
             onChange={(e) => handleMoodChange(e.target.value)}
-            className="px-4 py-2 pr-10 text-sm bg-black/30 font-body backdrop-blur-lg border border-white/10 rounded-full text-white focus:outline-none focus:border-cinema transition-colors appearance-none cursor-pointer hover:border-cinema custom-scrollbar"
+            className="px-4 py-2 pr-10 text-sm bg-black/30 font-body font-semibold backdrop-blur-lg border border-white/10 rounded-full text-white focus:outline-none focus:border-cinema transition-colors appearance-none cursor-pointer hover:border-cinema custom-scrollbar"
           >
             {moods.map((mood) => (
               <option
@@ -135,7 +150,7 @@ export default function GroqSuggestionsClient() {
             ))}
           </select>
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-white/70">
-            <IoMdArrowDropdown className="h-6 w-6 my-auto" />
+            <IoIosArrowDown className="h-4 w-4 my-auto mr-1" />
           </div>
         </div>
       </div>
@@ -146,7 +161,9 @@ export default function GroqSuggestionsClient() {
             <MediaCard
               movie={m}
               isFavorite={favoriteIds.includes(m.id)}
+              isInWatchlist={watchlistIds.includes(m.id)}
               onFavoriteChange={handleFavoriteChange}
+              onWatchlistChange={handleWatchlistChange}
             />
           </li>
         ))}

@@ -15,16 +15,17 @@ datasource db {
 }
 
 model User {
-  id            String     @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?    @unique
+  email         String?     @unique
   image         String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
   emailVerified DateTime?
   accounts      Account[]
   sessions      Session[]
   favorites     Favorite[]
+  watchlist     Watchlist[]
 }
 
 model Movie {
@@ -49,9 +50,10 @@ model Movie {
   trailer_key  String? // YouTube video key
   trailer_site String? // Site do vídeo (YouTube, Vimeo, etc.)
 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
   favoritedBy Favorite[]
+  watchlistBy Watchlist[]
 
   @@map("movies") // mapeia para tabela 'movies'
 }
@@ -65,6 +67,17 @@ model Favorite {
   createdAt DateTime @default(now())
 
   @@unique([userId, movieId]) // impede favoritar duas vezes o mesmo filme
+}
+
+model Watchlist {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  movieId   Int
+  createdAt DateTime @default(now())
+
+  @@unique([userId, movieId]) // prevents adding the same movie twice
 }
 
 model Account {

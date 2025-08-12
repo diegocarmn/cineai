@@ -7,6 +7,7 @@ import { useState } from "react";
 import type { Movie } from "../types";
 import { genreMap, getRatingStars, getTrailerUrl } from "../types";
 import FavoriteButton from "./FavoriteButton";
+import BookmarkButton from "./BookmarkButton";
 import { IoIosArrowDown } from "react-icons/io";
 
 type Props = {
@@ -18,6 +19,12 @@ type Props = {
   favoriteLoading?: boolean;
   pendingAction?: "add" | "remove" | null;
   onFavoriteToggle?: (e: React.MouseEvent) => Promise<void>;
+  isInWatchlist?: boolean;
+  onWatchlistChange?: (id: number, nextState: boolean) => void;
+  onWatchlistRemove?: () => void;
+  watchlistLoading?: boolean;
+  watchlistPendingAction?: "add" | "remove" | null;
+  onWatchlistToggle?: (e: React.MouseEvent) => Promise<void>;
 };
 
 export default function ExpandedMediaCard({
@@ -29,6 +36,12 @@ export default function ExpandedMediaCard({
   favoriteLoading = false,
   pendingAction = null,
   onFavoriteToggle,
+  isInWatchlist = false,
+  onWatchlistChange,
+  onWatchlistRemove,
+  watchlistLoading = false,
+  watchlistPendingAction = null,
+  onWatchlistToggle,
 }: Props) {
   const [imgLoaded, setImgLoaded] = useState(false);
 
@@ -76,8 +89,8 @@ export default function ExpandedMediaCard({
             </div>
           )}
 
-          {/* Favorite Button */}
-          <div className="absolute top-2 right-2 z-20">
+          {/* Favorite and Bookmark Buttons */}
+          <div className="absolute top-2 right-2 z-20 flex flex-col gap-2">
             <FavoriteButton
               movie={movie}
               isFavorite={isFavorite}
@@ -87,6 +100,16 @@ export default function ExpandedMediaCard({
               isLoading={favoriteLoading}
               pendingAction={pendingAction}
               onToggle={onFavoriteToggle}
+            />
+            <BookmarkButton
+              movie={movie}
+              isInWatchlist={isInWatchlist}
+              onWatchlistChange={onWatchlistChange || (() => {})}
+              onRemove={onWatchlistRemove}
+              size="md"
+              isLoading={watchlistLoading}
+              pendingAction={watchlistPendingAction}
+              onToggle={onWatchlistToggle}
             />
           </div>
         </div>
@@ -132,7 +155,7 @@ export default function ExpandedMediaCard({
               <h4 className="text-sm font-semibold font-body text-white mb-2">
                 Description
               </h4>
-              <div className="h-24 md:h-60 overflow-y-auto custom-scrollbar">
+              <div className="h-24 md:h-50 overflow-y-auto custom-scrollbar">
                 <p className="font-body text-sm text-neutral-300 leading-relaxed pr-2">
                   {movie.overview || "No description available."}
                 </p>
