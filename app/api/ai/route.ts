@@ -10,146 +10,67 @@ type GroqItem = { tmdb_query: string; year: number | null };
 
 function safeParse<T>(txt: string): T | null {
   try {
-    const cleaned = txt
-      .trim()
-      .replace(/^```json/i, "")
-      .replace(/^```/i, "")
-      .replace(/```$/i, "")
-      .trim();
-    return JSON.parse(cleaned) as T;
+    // Extract JSON array from the text
+    const jsonMatch = txt.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) return null;
+
+    return JSON.parse(jsonMatch[0]) as T;
   } catch {
     return null;
   }
 }
 
 /**
- * Selects optimal favorites with intelligent strategy:
- * 1. Maximum 30 favorites (optimized limit for Groq)
- * 2. If >30: takes 6 most recent + complements with genre/decade diversity
- * 3. Sends only title and year (essential data)
+ * Selects optimal favorites - if too many, takes recent ones + random selection
  */
 function selectOptimalFavorites(
   favorites: Array<{
     title: string;
     year: number | null;
-    genre_ids: number[];
     createdAt?: Date;
   }>,
-  maxCount: number = 30
+  maxCount: number = 20
 ) {
   if (favorites.length <= maxCount) {
     return favorites.map((fav) => ({ title: fav.title, year: fav.year }));
   }
 
-  const recentCount = 6;
-  const diversityCount = maxCount - recentCount;
-
+  // Take 6 most recent
   const recentFavorites = favorites
     .sort((a, b) => {
       if (!a.createdAt || !b.createdAt) return 0;
       return b.createdAt.getTime() - a.createdAt.getTime();
     })
-    .slice(0, recentCount);
+    .slice(0, 6);
 
-  const remainingFavorites = favorites.filter(
+  // Take random selection from the rest
+  const remaining = favorites.filter(
     (fav) => !recentFavorites.some((recent) => recent.title === fav.title)
   );
+  const shuffled = remaining.sort(() => Math.random() - 0.5);
+  const randomSelection = shuffled.slice(0, maxCount - 6);
 
-  const diversityFavorites = selectForDiversity(
-    remainingFavorites,
-    diversityCount
-  );
-
-  const selected = [...recentFavorites, ...diversityFavorites];
+  const selected = [...recentFavorites, ...randomSelection];
   return selected.map((fav) => ({ title: fav.title, year: fav.year }));
 }
 
-/**
- * Selects favorites prioritizing diversity of genres and decades
- */
-function selectForDiversity(
-  favorites: Array<{ title: string; year: number | null; genre_ids: number[] }>,
-  count: number
-) {
-  if (favorites.length <= count) return favorites;
-
-  const decadeGroups = new Map<string, typeof favorites>();
-  favorites.forEach((fav) => {
-    const decade = fav.year ? `${Math.floor(fav.year / 10) * 10}s` : "unknown";
-    if (!decadeGroups.has(decade)) decadeGroups.set(decade, []);
-    decadeGroups.get(decade)!.push(fav);
-  });
-
-  const genreGroups = new Map<number, typeof favorites>();
-  favorites.forEach((fav) => {
-    const primaryGenre = fav.genre_ids[0] || 0;
-    if (!genreGroups.has(primaryGenre)) genreGroups.set(primaryGenre, []);
-    genreGroups.get(primaryGenre)!.push(fav);
-  });
-
-  const selected: typeof favorites = [];
-  const usedTitles = new Set<string>();
-
-  const decades = Array.from(decadeGroups.keys()).sort();
-  const genres = Array.from(genreGroups.keys());
-
-  let decadeIndex = 0;
-  let genreIndex = 0;
-  let useDecade = true;
-
-  while (selected.length < count && (decades.length > 0 || genres.length > 0)) {
-    if (useDecade && decades.length > 0) {
-      const currentDecade = decades[decadeIndex % decades.length];
-      const decadeMovies = decadeGroups.get(currentDecade)!;
-
-      const available = decadeMovies.filter(
-        (movie) => !usedTitles.has(movie.title)
-      );
-      if (available.length > 0) {
-        const randomMovie =
-          available[Math.floor(Math.random() * available.length)];
-        selected.push(randomMovie);
-        usedTitles.add(randomMovie.title);
-      }
-      decadeIndex++;
-    } else if (genres.length > 0) {
-      const currentGenre = genres[genreIndex % genres.length];
-      const genreMovies = genreGroups.get(currentGenre)!;
-
-      const available = genreMovies.filter(
-        (movie) => !usedTitles.has(movie.title)
-      );
-      if (available.length > 0) {
-        const randomMovie =
-          available[Math.floor(Math.random() * available.length)];
-        selected.push(randomMovie);
-        usedTitles.add(randomMovie.title);
-      }
-      genreIndex++;
-    }
-
-    useDecade = !useDecade;
-  }
-
-  if (selected.length < count) {
-    const remaining = favorites.filter((fav) => !usedTitles.has(fav.title));
-    const shuffled = remaining.sort(() => Math.random() - 0.5);
-    const needed = count - selected.length;
-    selected.push(...shuffled.slice(0, needed));
-  }
-
-  return selected;
-}
-
 async function getGroqMovieListSimple(input: SimpleInput): Promise<GroqItem[]> {
+  // Calculate max_tokens based on requested count
+  const baseTokens = 500;
+  const tokensPerMovie = 25; // ~25 tokens per movie entry
+  const maxTokens = Math.min(
+    baseTokens + (input.count || 15) * tokensPerMovie,
+    2000
+  );
+
   const resp = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+    model: "llama3-8b-8192",
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: buildUserMessageSimple(input) },
     ],
-    temperature: 0.1,
-    max_tokens: 1024,
+    temperature: 0.7,
+    max_tokens: maxTokens,
   });
 
   const raw = resp.choices[0]?.message?.content ?? "[]";
@@ -166,10 +87,10 @@ export async function GET(request: Request) {
     if (!user?.favorites.length) {
       return NextResponse.json(
         {
-          message: "Authentication required",
+          message: "No favorites found to generate recommendations",
           results: [],
         },
-        { status: 401 }
+        { status: 200 }
       );
     }
 
@@ -178,34 +99,29 @@ export async function GET(request: Request) {
       year: fav.movie.release_date
         ? parseInt(fav.movie.release_date.slice(0, 4))
         : null,
-      genre_ids: fav.movie.genre_ids || [],
       createdAt: fav.createdAt,
     }));
 
-    const selectedFavorites = selectOptimalFavorites(allFavorites, 30);
-
-    console.log(
-      `AI Suggestions: ${selectedFavorites.length}/${allFavorites.length} favorites selected`
-    );
-    console.log(
-      `Strategy: ${
-        allFavorites.length > 30 ? "6 recent + diversity" : "All favorites"
-      }`
-    );
+    const selectedFavorites = selectOptimalFavorites(allFavorites, 20);
 
     const groqItems = await getGroqMovieListSimple({
       favorites: selectedFavorites,
-      top_n: 32,
       mood,
+      count: 25, 
     });
 
     const movies = await tmdbSearchFromGroqList(groqItems);
 
-    // Remove filmes que já estão nos favoritos do usuário
+    // Remove movies that are already in the user's favorites
     const favoriteIds = new Set(user.favorites.map((fav) => fav.movie.id));
     const filteredMovies = movies.filter((movie) => !favoriteIds.has(movie.id));
 
-    return NextResponse.json({ results: filteredMovies });
+    // Remove duplicate movies using Set based on ID
+    const uniqueMovies = Array.from(
+      new Map(filteredMovies.map((movie) => [movie.id, movie])).values()
+    );
+
+    return NextResponse.json({ results: uniqueMovies });
   } catch (err) {
     console.error("AI suggestions error:", err);
     return NextResponse.json(

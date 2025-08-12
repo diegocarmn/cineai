@@ -121,7 +121,7 @@ export default function ExpandedMediaCard({
               <div className="flex-1 min-w-0">
                 <h3
                   title={movie.title}
-                  className="text-xl md:text-2xl font-semibold font-body text-white line-clamp-2"
+                  className="text-xl md:text-2xl font-semibold font-body text-white line-clamp-2 md:pr-8"
                 >
                   {movie.title}
                 </h3>

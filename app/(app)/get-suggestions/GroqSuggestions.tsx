@@ -17,33 +17,27 @@ export default function GroqSuggestionsClient() {
   const moods = [
     { value: "", label: "Any mood" },
     { value: "happy", label: "Happy" },
-    { value: "cheerful", label: "Cheerful" },
     { value: "excited", label: "Excited" },
     { value: "hopeful", label: "Hopeful" },
     { value: "inspired", label: "Inspired" },
     { value: "romantic", label: "Romantic" },
-    { value: "playful", label: "Playful" },
-    { value: "curious", label: "Curious" },
     { value: "adventurous", label: "Adventurous" },
     { value: "empowered", label: "Empowered" },
     { value: "calm", label: "Calm" },
-    { value: "relaxed", label: "Relaxed" },
     { value: "cozy", label: "Cozy" },
     { value: "peaceful", label: "Peaceful" },
-    { value: "big-plot-twist", label: "Plot twist" },
     { value: "nostalgic", label: "Nostalgic" },
     { value: "bittersweet", label: "Bittersweet" },
     { value: "thoughtful", label: "Thoughtful" },
-    { value: "intrigued", label: "Intrigued" },
     { value: "melancholic", label: "Melancholic" },
     { value: "sad", label: "Sad" },
     { value: "heartbroken", label: "Heartbroken" },
     { value: "lonely", label: "Lonely" },
     { value: "anxious", label: "Anxious" },
-    { value: "nervous", label: "Nervous" },
     { value: "tense", label: "Tense" },
     { value: "scared", label: "Scared" },
     { value: "thrilled", label: "Thrilled" },
+    { value: "big plot twist", label: "Plot Twist" },
   ];
 
   useEffect(() => {
@@ -111,7 +105,6 @@ export default function GroqSuggestionsClient() {
     );
   };
 
-  /* UI ----------------------------------------------------------------- */
   if (isLoading)
     return (
       <div className="flex-1 flex mt-8 items-center justify-center">
@@ -129,7 +122,7 @@ export default function GroqSuggestionsClient() {
   return (
     <div className="mt-4 pt-5 md:pt-6 mb-5">
       <div className="flex items-center justify-center gap-4 mb-4">
-        <h2 className="text-center font-heading text-xl md:text-2xl bg-gradient-to-r from-green-50 via-green-200 to-green-50 text-transparent bg-clip-text bg-[length:200%_200%] animate-[gradient-x_6s_ease-in-out_infinite]">
+        <h2 className="text-center font-heading text-xl md:text-2xl bg-gradient-to-r from-yellow-50 via-yellow-200 to-yellow-50 text-transparent bg-clip-text bg-[length:200%_200%] animate-[gradient-x_6s_ease-in-out_infinite]">
           Your Mood
         </h2>
 
@@ -137,7 +130,7 @@ export default function GroqSuggestionsClient() {
           <select
             value={selectedMood}
             onChange={(e) => handleMoodChange(e.target.value)}
-            className="px-4 py-2 pr-10 text-sm bg-black/30 font-body font-semibold backdrop-blur-lg border border-white/10 rounded-full text-white focus:outline-none focus:border-cinema transition-colors appearance-none cursor-pointer hover:border-cinema custom-scrollbar"
+            className="px-4 py-2 pr-10 text-sm bg-black/30 font-body font-medium backdrop-blur-lg border border-white/10 rounded-full text-white focus:outline-none focus:border-cinema transition-colors appearance-none cursor-pointer hover:border-cinema custom-scrollbar"
           >
             {moods.map((mood) => (
               <option
