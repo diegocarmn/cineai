@@ -42,7 +42,7 @@ export default function LandingPage() {
           <span className="mr-2 md:text-lg">Get started</span>
           <GoArrowRight className="h-5 w-5" />
         </Button>
-        <footer className="fixed bottom-0 left-0 z-50 flex w-full py-2 pl-2">
+        <footer className="fixed bottom-0 right-0 z-50 flex justify-end w-full py-2 pl-2">
           <Link
             href="https://github.com/diegocarmn"
             target="_blank"
