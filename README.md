@@ -8,7 +8,7 @@
 [![React](https://img.shields.io/badge/React-19.1-149eca?logo=react&logoColor=white)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 
-<a href="https://aicine.vercel.app" target="_blank" rel="noopener noreferrer">🚀 <strong>Live Demo</strong></a>
+**🚀 [Live Demo](https://aicine.vercel.app)**
 
 CineAI is a modern web app that helps you decide what to watch.
 Search and save your favorites, build a watchlist, and get AI-powered recommendations based on your taste and even your mood (e.g., Happy, Thoughtful, Scared). Built with cutting-edge web technologies, it offers a seamless experience for movie enthusiasts to discover, organize, and track their favorite films.
