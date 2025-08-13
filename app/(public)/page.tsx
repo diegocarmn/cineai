@@ -44,7 +44,7 @@ export default function LandingPage() {
         </Button>
         <footer className="fixed bottom-0 right-0 z-50 flex justify-end w-full py-2 pl-2">
           <Link
-            href="https://github.com/diegocarmn"
+            href="https://github.com/diegocarmn/cineai"
             target="_blank"
             className="group relative inline-flex items-center gap-1 rounded-full px-4 py-2 backdrop-blur-lg transition hover:bg-white/10"
           >
