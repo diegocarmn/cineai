@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MediaCard from "../../components/MediaCard";
 import type { Movie } from "../../types";
 
@@ -13,12 +13,35 @@ export default function MyTasteClient({
 }) {
   const favoriteMovies = favorites.map(({ movie }) => movie);
   const [movies, setMovies] = useState<Movie[]>(favoriteMovies);
+  const [watchlistIds, setWatchlistIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        // Load watchlist
+        const watchRes = await fetch("/api/user-watchlist", {
+          cache: "no-store",
+        });
+        const watchData = await watchRes.json();
+        setWatchlistIds(watchData.watchlist ?? []);
+      } catch (err) {
+        console.error("Erro ao buscar dados da watchlist:", err);
+      }
+    })();
+  }, []);
 
   // Handle favorite change to update local state
   const handleFavoriteChange = (id: number, nextFav: boolean) => {
     if (!nextFav) {
       setMovies((prev) => prev.filter((movie) => movie.id !== id));
     }
+  };
+
+  // Handle watchlist change to update local state
+  const handleWatchlistChange = (id: number, inWatchlist: boolean) => {
+    setWatchlistIds((prev) =>
+      inWatchlist ? [...prev, id] : prev.filter((x) => x !== id)
+    );
   };
 
   return (
@@ -44,6 +67,8 @@ export default function MyTasteClient({
                   movie={movie}
                   isFavorite={true}
                   onFavoriteChange={handleFavoriteChange}
+                  isInWatchlist={watchlistIds.includes(movie.id)}
+                  onWatchlistChange={handleWatchlistChange}
                 />
               </li>
             ))}

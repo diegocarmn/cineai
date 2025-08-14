@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MediaCard from "../../components/MediaCard";
 import type { Movie } from "../../types";
 
@@ -13,12 +13,35 @@ export default function MyWatchlist({
 }) {
   const watchlistMovies = watchlist.map(({ movie }) => movie);
   const [movies, setMovies] = useState<Movie[]>(watchlistMovies);
+  const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        // Load favorites
+        const favRes = await fetch("/api/user-favorites", {
+          cache: "no-store",
+        });
+        const favData = await favRes.json();
+        setFavoriteIds(favData.favorites ?? []);
+      } catch (err) {
+        console.error("Erro ao buscar dados dos favoritos:", err);
+      }
+    })();
+  }, []);
 
   // Handle watchlist change to update local state
   const handleWatchlistChange = (id: number, nextState: boolean) => {
     if (!nextState) {
       setMovies((prev) => prev.filter((movie) => movie.id !== id));
     }
+  };
+
+  // Handle favorite change to update local state
+  const handleFavoriteChange = (id: number, isFav: boolean) => {
+    setFavoriteIds((prev) =>
+      isFav ? [...prev, id] : prev.filter((x) => x !== id)
+    );
   };
 
   return (
@@ -42,8 +65,8 @@ export default function MyWatchlist({
               <li key={movie.id}>
                 <MediaCard
                   movie={movie}
-                  isFavorite={false}
-                  onFavoriteChange={() => {}}
+                  isFavorite={favoriteIds.includes(movie.id)}
+                  onFavoriteChange={handleFavoriteChange}
                   isInWatchlist={true}
                   onWatchlistChange={handleWatchlistChange}
                 />
