@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
 import "../globals.css";
 import { SessionProvider } from "next-auth/react";
@@ -12,51 +11,6 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
-
-export const metadata: Metadata = {
-  description:
-    "Discover what to watch next with AI-powered recommendations. Add your favorites and get smart suggestions based on your taste.",
-  keywords: [
-    "CineAI",
-    "movie recommendations",
-    "AI for movies",
-    "film suggestions",
-    "series recommendations",
-    "TMDb",
-    "smart watchlist",
-  ],
-  authors: [{ name: "Diego Carmona", url: "https://github.com/diegocarmn" }],
-  creator: "Diego Carmona",
-  metadataBase: new URL("https://cineai.vercel.app"),
-  openGraph: {
-    type: "website",
-    url: "https://cineai.vercel.app",
-    title: "CineAI",
-    description:
-      "Let CineAI recommend your next favorite movie based on your taste.",
-    siteName: "CineAI",
-    images: [
-      {
-        url: "https://opengraph.b-cdn.net/production/images/67e66151-ac16-4449-8760-e992716cf70d.jpg?token=u9HAp13vsVhxG356iv5QrrctdMyz1JamLgfRHcbnguM&height=834&width=1200&expires=33290391110",
-        width: 1200,
-        height: 630,
-        alt: "CineAI – Smart Movie Recommendations",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "CineAI",
-    description: "Smarter movie & series recommendations using AI.",
-    images: [
-      "https://opengraph.b-cdn.net/production/images/67e66151-ac16-4449-8760-e992716cf70d.jpg?token=u9HAp13vsVhxG356iv5QrrctdMyz1JamLgfRHcbnguM&height=834&width=1200&expires=33290391110",
-    ],
-    creator: "Diego Carmona",
-  },
-  icons: {
-    icon: "/favicon.png",
-  },
-};
 
 export default function PublicLayout({
   children,

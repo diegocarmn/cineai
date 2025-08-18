@@ -2,7 +2,7 @@
 
 import { RiMovie2AiLine } from "react-icons/ri";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-import { FaRegStar, FaRegBookmark } from "react-icons/fa";
+import { FaRegStar } from "react-icons/fa";
 import { IoIosStar, IoMdHome } from "react-icons/io";
 import { TbSparkles, TbBookmark } from "react-icons/tb";
 import HeaderButton from "./HeaderButton";
