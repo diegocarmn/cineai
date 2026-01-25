@@ -15,7 +15,7 @@ const Header = () => {
             bg-gradient-to-r from-cinema via-[#ffeb7b] to-[#fff8b8] 
             bg-clip-text"
           >
-            CineAI
+            CineAI 
           </h1>
         </Link>
         <AuthButton className="ml-2" />

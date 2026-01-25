@@ -6,6 +6,7 @@ import type { Movie } from "../../types";
 
 type Favorite = { movie: Movie };
 
+
 export default function MyTasteClient({
   favorites,
 }: {
