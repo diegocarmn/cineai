@@ -1,5 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
+const accelerateUrl = process.env.DATABASE_URL;
+if (!accelerateUrl) {
+  throw new Error("Missing DATABASE_URL environment variable");
+}
+
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
@@ -7,6 +12,7 @@ const globalForPrisma = globalThis as unknown as {
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
+    accelerateUrl,
     log: ["query"], // debugging purposes
   });
 

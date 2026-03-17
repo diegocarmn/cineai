@@ -2,7 +2,12 @@
 
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+const accelerateUrl = process.env.DATABASE_URL;
+if (!accelerateUrl) {
+  throw new Error("Missing DATABASE_URL environment variable");
+}
+
+const prisma = new PrismaClient({ accelerateUrl });
 
 async function main() {
   await prisma.user.create({
