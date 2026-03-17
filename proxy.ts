@@ -4,7 +4,7 @@ import { getToken } from "next-auth/jwt";
 
 const protectedRoutes = ["/home", "/favorites", "/get-suggestions"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const session = await getToken({
     req: request,
     secret: process.env.AUTH_SECRET,
