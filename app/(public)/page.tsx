@@ -37,10 +37,10 @@ export default function LandingPage() {
         </p>
         <Button
           onClick={() => signIn("google", { callbackUrl: "/home" })}
-          className="mt-6 md:mt-10 shadow-lg/20 shadow-cinema  hover:scale-105 transition-transform duration-100 ease-in-out md:px-6"
+          className="group/button mt-6 md:mt-10 shadow-lg/20 shadow-cinema md:px-6"
         >
           <span className="mr-2 md:text-lg">Get started</span>
-          <GoArrowRight className="h-5 w-5" />
+          <GoArrowRight className="h-5 w-5 group-hover/button:translate-x-1 group-active/button:translate-x-1 transition-transform duration-250 ease-in-out" />
         </Button>
         <footer className="fixed bottom-0 right-0 z-50 flex justify-end w-full py-2 pl-2">
           <Link

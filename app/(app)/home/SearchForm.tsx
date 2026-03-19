@@ -41,7 +41,7 @@ export default function SearchForm() {
     (async () => {
       setIsLoading(true);
       try {
-        const res = await fetch("/api/trending", { cache: "no-store" });
+        const res = await fetch("/api/trending");
         const data = await res.json();
         setMovies(data.results ?? []);
       } catch (err) {
@@ -98,14 +98,14 @@ export default function SearchForm() {
             id="search"
             name="search"
             placeholder="e.g. Fantastic Four"
-            className="px-4 py-2 sm:py-3 sm:px-5 w-full text-sm font-normal rounded-full bg-black/30 backdrop-blur-lg border border-white/10 focus:outline-none focus:border-cinema"
+            className="px-4 py-2 sm:py-3 sm:px-5 w-full text-sm font-normal rounded-full bg-black/30 backdrop-blur-lg border border-white/10 focus:outline-none focus:border-white/20 transition-colors duration-250"
           />
           <Button
             type="submit"
-            className="ml-2 md:ml-4 w-fit sm:py-3 sm:px-8 hover:shadow-xl/10 shadow-cinema"
+            className="group/button ml-2 md:ml-4 w-fit sm:py-3 sm:px-8 hover:shadow-xl/10 shadow-cinema"
           >
-            <IoSearch className="mr-2 h-4 w-4" />
             Search
+            <IoSearch className="ml-2 h-4 w-4 group-hover/button:translate-x-1 group-active/button:translate-x-1 transition-transform duration-250 ease-in-out" />
           </Button>
         </section>
       </form>

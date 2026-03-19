@@ -41,10 +41,10 @@ const AuthButton: React.FC<AuthButtonProps> = ({
   return (
     <button
       onClick={handleClick}
-      className={`flex items-center justify-center whitespace-nowrap cursor-pointer bg-white text-black text-sm font-semibold rounded-full transition-all duration-300 ease-out active:scale-95 px-4 py-2 hover:shadow-xl/10 shadow-white ${className}`}
+      className={`group/button flex items-center justify-center whitespace-nowrap cursor-pointer bg-white text-black text-sm font-semibold rounded-full transition-all duration-150 ease-out active:scale-95 px-4 py-2 hover:shadow-xl/10 shadow-white ${className}`}
     >
       {isLoggedIn ? (
-        <TbLogout2 className="h-4 w-4 mr-2 inline" />
+        <TbLogout2 className="h-4 w-4 mr-2 inline group-hover/button:-translate-x-0.5 group-active/button:-translate-x-0.5 transition-transform duration-250 ease-in-out" />
       ) : (
         <FaGoogle className="h-[0.875rem] w-[0.875rem] mr-2 inline" />
       )}
