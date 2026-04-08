@@ -1,6 +1,7 @@
 import { Geist, Inter } from "next/font/google";
 import "../globals.css";
 import { SessionProvider } from "next-auth/react";
+import { Analytics } from "@vercel/analytics/next";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -22,6 +23,7 @@ export default function PublicLayout({
       <html lang="en">
         <body className={`${geist.variable} ${inter.variable} antialiased`}>
           {children}
+          <Analytics />
         </body>
       </html>
     </SessionProvider>
